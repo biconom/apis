@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/filter;filter_pb";
+
+message Filter {
+  enum Side {
+    ASC = 0; // в порядке возрастания (от меньшего к большему)
+    DESC = 1; // в порядке убывания (от большего к меньшему)
+  }
+  uint64 step = 1; // идентификатор записи
+  uint32 limit = 2; // количество возвращаемых записей (min:1)
+  Side side = 3; // направление сортировки
+}

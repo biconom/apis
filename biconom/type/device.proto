@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/device;device_pb";
+
+message Device {
+  message Type {
+    enum Id {
+      UNKNOWN = 0;
+      BOT = 1;
+      WEB = 2;
+      PHONE = 3;
+      TABLET = 4;
+      DESKTOP = 5;
+    }
+    Id id = 1;
+    string version = 2;
+  }
+  message OperatingSystem {
+    enum Id {
+      UNKNOWN = 0;
+      IOS = 1;
+      MACOS = 2;
+      ANDROID = 3;
+      WINDOWS = 4;
+      LINUX = 5;
+    }
+    Id id = 1;
+    string version = 2;
+  }
+  Type device_type = 3;
+  OperatingSystem operating_system = 4;
+}

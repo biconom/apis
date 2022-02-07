@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/profile;profile_pb";
+
+message Profile {
+  message Data {
+    enum Gender {
+      UNKNOWN = 0;
+      MALE = 1;
+      FEMALE = 2;
+    }
+    string name = 1; // имя
+    string surname = 2; // фамилия
+    string patronymic = 3; // отчество
+    Gender gender = 4; // пол
+    uint32 birthday = 5; // дата рождения в формате YYYYMMDD
+    string national = 6; // гражданство
+  }
+  Data data = 1; // профиль
+  bool modification_locked = 2; // заблокировано для редактирования
+}
