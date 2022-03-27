@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package biconom.admin.marketplace.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/marketplace/v1;service_admin_marketplace_pb";
+
+
+service Marketplace {
+  // TODO: -
+}

@@ -6,7 +6,7 @@ import "biconom/type/session.proto";
 import "biconom/type/filter.proto";
 import "google/protobuf/empty.proto";
 
-option go_package = "github.com/biconom/go-genproto/biconom/session/v1;service_client_session_pb";
+option go_package = "github.com/biconom/go-genproto/biconom/client/session/v1;service_client_session_pb";
 
 service Session {
   rpc List (biconom.type.Filter) returns (stream biconom.type.Session) {} // отобразить список открытых сессий

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package biconom.admin.tree.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/position.proto";
+import "biconom/type/tree.proto";
+import "biconom/type/sort.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/network/v1;service_admin_tree_pb";
+
+service Position {
+  rpc Get (biconom.type.Position.ID) returns (biconom.type.Position) {} // отобразить позицию
+  rpc List (PositionListRequest) returns (stream biconom.type.Position) {} // список позиций
+  rpc ListByFilter (PositionListByFilterRequest) returns (stream biconom.type.Position) {} // список позиций с параметрами фильтра "дерева" и "аккаунта"
+  rpc View (PositionViewRequest) returns (PositionViewResponse) {} // отобразить структуру позиций
+}
+
+message PositionListRequest {
+  biconom.type.Position.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message PositionListByFilterRequest {
+  repeated biconom.type.Tree.ID filter_trees = 1;
+  repeated biconom.type.Account.ID filter_accounts = 2;
+  biconom.type.Position.ID step = 3;
+  biconom.type.Sort sort = 4;
+}
+message PositionViewRequest {
+  biconom.type.Position.ID position = 1;
+  uint32 level = 2;
+}
+message PositionViewResponse {
+  biconom.type.Position position = 1;
+  repeated biconom.type.Position positions = 2;
+}
+// Бинар:
+//  TODO: статистика изменения прироста позиций в бинарной структуре
+//  TODO: статистика изменения прироста дохода в бинарной структуре
+//  TODO: статистика изменения товарооборота в бинарной структуре
+//  TODO: информация об бонусах выбранного пакета
+//  TODO: информация об пакете выбранной позиции
+//  TODO: статистика счетчиков для бинарной позиции
+//  TODO: статистика ответвлений в бинарной позиции
+//  TODO: статистика с лимитом дохода для бонуса (bonus pool)
+//  TODO: статистика доходов по бонусам для бинарой позиции

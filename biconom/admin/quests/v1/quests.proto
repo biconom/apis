@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package biconom.admin.quests.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/quests/v1;service_admin_quests_pb";
+
+service Quests {
+  //  TODO: список всех квестов
+  //  TODO: список доступных квестов
+  //  TODO: данные об выбранном квесте
+}

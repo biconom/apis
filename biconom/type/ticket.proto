@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package biconom.type;
+//import "google/protobuf/any.proto";
+//import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/ticket;ticket_pb";
+
+message Ticket {
+  message Id {
+    uint32 ticket_id = 1; // идентификатор билета
+  }
+  message Header {
+    uint32 ticket_id = 1; // идентификатор билета
+    google.protobuf.Timestamp created_at = 2; // дата создания билета
+    bool expired_value = 3; // значение просрочености действия билета
+    bool expired_support = 4; // поддержка срока действия билета
+    google.protobuf.Timestamp expired_at = 5; // дата завершения срока действия билета
+    bool activated_value = 6; // значение активации билета
+    google.protobuf.Timestamp activated_at = 7; // дата активации билета
+  }
+  message Details {
+    message TV {
+      // TODO: детали которые включены в билет
+      // TODO: срок действия после активации
+      // TODO: начало и завершения события
+    }
+    oneof kind {
+      google.protobuf.Any metadata = 100;
+    }
+    // TODO: тип билета (сервис-получатель: "кинотеатр", "мероприятие", ...)
+  }
+  Header header = 1;
+  Details details = 2; // подробные параметры билета
+}
+// TicketBucket: группа биллетов (стандарт, VIP и тд)
+message TicketBlock {
+  message Id {
+    oneof unique_field {
+      uint32 block_id = 1;
+      string block_name = 2;
+    }
+  }
+  message Header {
+    uint32 block_id = 1;
+    string block_name = 2;
+  }
+  Header header = 1;
+  // TODO: количество выпушенных билетов
+  // TODO: количество активированных билетов
+  // TODO: количество всего доступных билетов
+}
+
+// TicketBucket: группа биллетов (стандарт, VIP и тд)
+message TicketBucket {
+  message Id {
+    uint32 bucket_id = 1;
+  }
+  message Header {
+    uint32 bucket_id = 1;
+    string title = 2;
+  }
+  Header header = 1;
+}
+
+
+// TODO: количество выпушенных билетов
+// TODO: количество активированных билетов
+// TODO: количество всего доступных билетов

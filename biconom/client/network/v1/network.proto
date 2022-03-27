@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package biconom.client.network.v1;
+
+import "biconom/type/session.proto";
+import "biconom/type/rank.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/network/v1;service_client_network_pb";
+
+service Network {
+  rpc PartnerInfo (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PartnerList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc SearchTeamByLogin (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc SearchAccountByLogin (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}

@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package biconom.type;
+import "biconom/type/condition.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/rank;rank_pb";
+
+message RankSystem {
+  message ID {
+    oneof unique_field {
+      uint32 rank_system_id = 1;
+      string rank_system_name = 2;
+    }
+  }
+  message Header {
+    uint32 rank_system_id = 1;
+    string rank_system_name = 2;
+  }
+  message Rank {
+    message ID {
+      message RankName {
+        RankSystem.ID rank_system = 1;
+        string rank_name = 2;
+      }
+      message RankStars {
+        RankSystem.ID rank_system = 1;
+        uint32 stars = 2;
+      }
+      oneof unique_field {
+        uint32 rank_id = 1;
+        RankName rank_name = 2;
+        RankStars rank_stars = 3;
+      }
+    }
+    message Header {
+      uint32 rank_id = 1;
+      string rank_name = 2;
+      uint32 stars = 3;
+    }
+    Header header = 1;
+    biconom.type.ConditionExecutionBucket condition_execution_bucket = 2;
+  }
+  message Option {
+    Header header = 1;
+    Rank rank = 2;
+  }
+  Header header = 1;
+  repeated Rank ranks = 2;
+}

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package biconom.admin.currency.v1;
+
+import "biconom/type/sort.proto";
+import "biconom/type/currency.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/currency/v1;service_admin_currency_pb";
+
+service Currency {
+  rpc Get (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отобразить данные выбранной валюты
+  rpc List (CurrencyListRequest) returns (stream biconom.type.Currency) {} // список валют
+  rpc Create (CurrencyCreateRequest) returns (biconom.type.Currency) {} // саздать валюту
+}
+
+message CurrencyListRequest {
+  biconom.type.Currency.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool only_published_currency = 3;
+}
+message CurrencyCreateRequest {
+  string currency_name = 1;
+  uint32 decimal = 2;
+  bool published = 3;
+}

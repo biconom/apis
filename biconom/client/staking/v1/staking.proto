@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package biconom.client.staking.v1;
+
+import "biconom/type/session.proto";
+import "biconom/type/filter.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/staking/v1;service_client_staking_pb";
+
+service Staking {
+//  TODO: Список всех пакетов
+//  TODO: Список всех контрактов пользователя
+//  TODO: Досрочно закрыть контракт пользователя
+//  TODO: История начислений по всем контрактам
+//  TODO: История начислений по выбранному контракту
+//  TODO: История начислений по выбранной инвестиции в контракте
+
+//  rpc List (biconom.type.Filter) returns (stream biconom.type.Session) {} // отобразить список открытых сессий
+//  rpc DeactivateOther(google.protobuf.Empty) returns (google.protobuf.Empty) {} // деактивировать все сессии кроме текущей
+//  rpc DeactivateCurrent(google.protobuf.Empty) returns (google.protobuf.Empty) {} // деактивировать текущую сессию
+}
+service StakingAdmin {
+  //  TODO: Создать инвестиционный пакет
+  //  TODO: Изменить инвестиционный пакет
+  //  TODO: Удалить инвестиционный пакет
+  //  TODO: Список всех пакетов
+  //  TODO: Создать инвестиционный контракт для пользователя
+}

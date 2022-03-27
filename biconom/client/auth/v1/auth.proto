@@ -30,9 +30,10 @@ message SignUpRequest {
   string locale = 5; // идентификатор языка (ru-RU, en-US, ...)
 }
 message SignAttachRequest {
-  biconom.type.Profile.Data profile = 1; // данные профиля пользователя
-  string password = 2; // пароль для аккаунта
-  string locale = 3; // идентификатор языка (ru-RU, en-US, ...)
+  biconom.type.Contact contact = 1; // канал через который будет осуществляется идентификация
+  biconom.type.Profile.Data profile = 2; // данные профиля пользователя
+  string password = 3; // пароль для аккаунта
+  string locale = 4; // идентификатор языка (ru-RU, en-US, ...)
 }
 message RecoveryPasswordRequest {
   biconom.type.Agent agent = 1; // данные об клиет-агенте с которого выполняется запрос

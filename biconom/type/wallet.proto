@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/payment_system.proto";
+import "biconom/type/until.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/wallet;wallet_pb";
+
+message Wallet {
+  message ID {
+    oneof unique_field {
+      uint32 wallet_id = 1;
+      string wallet_name = 2;
+    }
+  }
+  message PaymentSystem {
+    Wallet.ID wallet = 1;
+    biconom.type.PaymentSystem.ID payment_system = 2;
+    message BotKey {
+      message ID {
+        biconom.type.PaymentSystem.ID payment_system = 1;
+        uint32 bot_key_id = 2;
+      }
+      uint32 wallet_id = 1;
+      uint32 payment_system_id = 2;
+      uint32 bot_key_id = 3;
+      string bot_key_title = 4;
+      string token = 5;
+      biconom.type.Until ttl = 6;
+      repeated string ip_masks = 7;
+    }
+  }
+  message Header {
+    uint32 wallet_id = 1;
+    string wallet_name = 2;
+    bool published = 3;
+  }
+}

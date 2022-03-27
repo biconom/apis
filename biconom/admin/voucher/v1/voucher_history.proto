@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package biconom.admin.voucher.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/voucher/v1;service_admin_voucher_pb";
+
+service VoucherHistory {
+  rpc Get (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: отобразить сибытие в истории работы с ваучерами
+  rpc List (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // TODO: список событий в истории работы с ваучерами
+  rpc ListByAccount (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // TODO: список событий пользователя в истории работы с ваучерами
+}

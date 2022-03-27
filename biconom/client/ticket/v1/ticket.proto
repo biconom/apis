@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package biconom.client.ticket.v1;
+
+import "biconom/type/ticket.proto";
+import "biconom/type/sort.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/ticket/v1;service_client_ticket_pb";
+
+service Ticket {
+  rpc Get (biconom.type.Ticket.Id) returns (biconom.type.Ticket) {} // отобразить данные выбранного билета
+  rpc List (ListRequest) returns (ListResponse) {} // список билетов
+  rpc Activate (ActivateRequest) returns (biconom.type.Ticket) {} // активировать билет
+}
+
+message ListRequest {
+  biconom.type.Ticket.Id step = 1; // идентификатор записи
+  biconom.type.Sort sort = 2; // параметр сортировки данных
+}
+message ActivateRequest {
+  uint32 ticket_id = 1; // идентификатор записи
+  string password = 2; // пароль активации
+}
+
+message ListResponse {
+  repeated biconom.type.Ticket tickets = 1;
+}

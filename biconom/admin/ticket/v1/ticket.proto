@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package biconom.admin.ticket.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/ticket/v1;service_admin_ticket_pb";
+
+service Ticket {
+  // TODO: -
+}

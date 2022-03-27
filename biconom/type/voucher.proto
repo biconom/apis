@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/voucher;voucher_pb";
+
+message Voucher {
+    uint32 voucher_id = 1;
+}

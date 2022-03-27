@@ -92,11 +92,12 @@ message Confirmation {
   uint64 id = 1;
   Method.Id method_id = 2;
   Status status_id = 3;
-  int64 created_at = 4;
-  int64 expires_at = 5;
-  int64 modified_at = 6;
+  uint32 created_at = 4;
+  uint32 expires_at = 5;
+  uint32 modified_at = 6;
   uint32 counter_limit = 7;
   uint32 counter_value = 8;
   map<uint32, Field> fields = 9; // map key is "field_id"
   repeated Option options = 10;
+  google.protobuf.Any meta = 11;
 }

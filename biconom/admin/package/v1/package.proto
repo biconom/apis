@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package biconom.admin.package.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/package/v1;service_admin_package_pb";
+
+service Package {
+  //  TODO: список инвестиционных тарифных планов
+  //  TODO: информация об выбранном тарифном плане
+  //  TODO: приобрести выбранный тарифный план
+  //  TODO: информация об текущем пакете в выбранном тарифном плане
+  //  TODO: история приоьретения пакетов в тарифном плане
+  //  TODO: история начислений по приобретенному пакету
+}

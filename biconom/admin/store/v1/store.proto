@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package biconom.admin.store.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/store/v1;service_admin_store_pb";
+
+service Store {
+  //  TODO: приобрести подписку
+  //  TODO: приобрести NFT
+  //  TODO: приобрести товар
+  //  TODO: история заказов
+  //  TODO: добавить в корзину
+  //  TODO: оплатить товары в корзине
+  //  TODO: оформить корзину
+}

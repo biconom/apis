@@ -1,0 +1,83 @@
+syntax = "proto3";
+
+package biconom.admin.currency.v1;
+
+import "biconom/type/sort.proto";
+import "biconom/type/currency.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/currency/v1;service_admin_currency_pb";
+
+service CurrencyPairRateSource {
+  rpc Get (biconom.type.Currency.Pair.Rate.Source.ID) returns (biconom.type.Currency.Pair.Rate.Source) {} // отобразить комбинацию данных выбранного источника и список курсов валют
+  rpc List (CurrencyPairRateSourceListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source) {} // список источников с их списками курсов валют
+  rpc ListByPair (CurrencyPairRateSourceListByPairRequest) returns (stream biconom.type.Currency.Pair.Rate.Source) {} // список источников с их списками курсов валют (с использованием выбранной пары)
+  rpc Create (CurrencyPairRateSourceCreateRequest) returns (biconom.type.Currency.Pair.Rate.Source) {} // создать источник курсов валют
+  rpc HeaderGet (biconom.type.Currency.Pair.Rate.Source.ID) returns (biconom.type.Currency.Pair.Rate.Source.Header) {} // отобразить данные выбранного источника курсов валют
+  rpc HeaderList (CurrencyPairRateSourceListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Header) {} // список источников курсов валют
+  rpc HeaderListByPair (CurrencyPairRateSourceListByPairRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Header) {} // список источников курсов валют (с использованием выбранной пары)
+  rpc HeaderRename (CurrencyPairRateSourceHeaderRenameRequest) returns (biconom.type.Currency.Pair.Rate.Source.Header) {} // переименовать выбранный источник курсов валют
+  rpc ValueGet (biconom.type.Currency.Pair.Rate.Source.Option.ID) returns (biconom.type.Currency.Pair.Rate.Source.Option) {} // отобразить данные об курсе валютной пары выбранного источника
+  rpc ValueSet (CurrencyPairRateSourceValueSetRequest) returns (biconom.type.Currency.Pair.Rate.Source.Option) {} // установить данные об курсе валютной пары выбранного источника
+  rpc ValueList (CurrencyPairRateSourceValueListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Option) {} // список данных курсов валют
+  rpc ValueListByFilter (CurrencyPairRateSourceValueListByFilterRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Option) {} // список данных курсов валют (с использованием фильтра)
+  rpc ValueListBySource (CurrencyPairRateSourceValueListBySourceRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Option.Value) {} // список данных курсов валют выбранного источника
+  rpc ValueDefaultGet (biconom.type.Currency.Pair.ID) returns (biconom.type.Currency.Pair.Rate.Source.Option.Value) {} // отобразить данные об курсе валютной пары по умолчанию
+  rpc ValueDefaultList (CurrencyPairRateSourceValueDefaultListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Option.Value) {} // список данных курсов валют по умолчанию
+  rpc ValueDefaultFullGet (biconom.type.Currency.Pair.ID) returns (biconom.type.Currency.Pair.Rate.Source.Option) {} // отобразить данные об курсе валютной пары по умолчанию
+  rpc ValueDefaultFullList (CurrencyPairRateSourceValueDefaultListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Option) {} // список данных курсов валют по умолчанию
+  rpc ValueDefaultAttach (biconom.type.Currency.Pair.Rate.Source.Option.ID) returns (biconom.type.Currency.Pair.Rate.Source.Option) {} // присоединить источник по умолчанию для выбранной валютной пары
+  rpc ValueDefaultDetach (biconom.type.Currency.Pair.ID) returns (google.protobuf.Empty) {} // отсоединить источник по умолчанию для выбранной валютной пары
+}
+
+message CurrencyPairRateSourceListRequest {
+  biconom.type.Currency.Pair.Rate.Source.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool only_published_source = 3;
+  bool only_published_pair = 4;
+}
+message CurrencyPairRateSourceListByPairRequest {
+  biconom.type.Currency.Pair.ID pair = 1;
+  biconom.type.Currency.Pair.Rate.Source.ID step = 2;
+  biconom.type.Sort sort = 3;
+  bool only_published_source = 4;
+  bool only_published_pair = 5;
+}
+message CurrencyPairRateSourceCreateRequest {
+  string rate_source_name = 1;
+  bool published = 3;
+}
+message CurrencyPairRateSourceHeaderRenameRequest {
+  biconom.type.Currency.Pair.Rate.Source.ID source = 1;
+  string rate_source_name = 2;
+}
+message CurrencyPairRateSourceValueSetRequest {
+  biconom.type.Currency.Pair.Rate.Source.Option.ID option = 1;
+  string source_value = 2;
+  string target_value = 3;
+}
+message CurrencyPairRateSourceValueListRequest {
+  biconom.type.Currency.Pair.Rate.Source.Option.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool only_published_source = 3;
+  bool only_published_pair = 4;
+}
+message CurrencyPairRateSourceValueListByFilterRequest {
+  repeated biconom.type.Currency.Pair.Rate.Source.ID rate_sources = 1;
+  repeated biconom.type.Currency.Pair.ID currency_pairs = 2;
+  bool only_published_source = 3;
+  bool only_published_pair = 4;
+}
+message CurrencyPairRateSourceValueListBySourceRequest {
+  biconom.type.Currency.Pair.Rate.Source.ID rate_source = 1;
+  biconom.type.Currency.Pair.ID step = 2;
+  biconom.type.Sort sort = 3;
+  bool only_published_source = 4;
+  bool only_published_pair = 5;
+}
+message CurrencyPairRateSourceValueDefaultListRequest {
+  biconom.type.Currency.Pair.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool only_published_source = 3;
+  bool only_published_pair = 4;
+}

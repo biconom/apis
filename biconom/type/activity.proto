@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/until.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/activity;activity_pb";
+
+message Activity {
+  message Header {
+    uint32 activity_id = 1;
+    string activity_name = 2;
+  }
+  message Counter {
+    uint32 counter_id = 1;
+    biconom.type.Until counter_value = 2;
+  }
+  Header header = 1;
+  Counter counter = 2;
+}

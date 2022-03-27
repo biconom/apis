@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package biconom.client.turnover.v1;
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/turnover/v1;service_client_turnover_pb";
+
+service Turnover {
+  rpc Get (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+// TODO: получить товарооборот кастомный
+// TODO: получить товарооборот аккаунта
+// TODO: получить товарооборот структуры аккаунта
+// TODO: получить товарооборот позиции структуры аккаунта
+}

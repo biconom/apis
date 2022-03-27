@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/limit.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/sort;sort_pb";
+
+message Sort {
+  enum Side {
+    ASC = 0; // в порядке возрастания (от меньшего к большему)
+    DESC = 1; // в порядке убывания (от большего к меньшему)
+  }
+  Side side = 1; // направление сортировки
+  biconom.type.Limit limit = 2; // лимит возвращаемых записей (min:1)
+}

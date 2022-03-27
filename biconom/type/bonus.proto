@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package biconom.type;
+import "biconom/type/currency.proto";
+
+import "biconom/type/activity.proto";
+import "biconom/type/contact.proto";
+import "biconom/type/condition.proto";
+import "biconom/type/profile.proto";
+import "biconom/type/rank.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/bonus;bonus_pb";
+
+/*message Bonus {
+  uint32 bonus_id = 1;
+  string bonus_name = 2;
+}
+message BonusLimit {
+  message Header {
+    uint32 bonus_limit_id = 1;
+    string bonus_limit_name = 2;
+  }
+  message Currency {
+    message Header {
+      uint32 currency_id = 1;
+    }
+    message Counter {
+      uint32 counter_id = 1;
+      uint32 bonus_limit_id = 2;
+      uint32 currency_id = 3;
+    }
+  }
+  Header header = 1;
+  repeated Currency currencies = 2;
+}*/
+
+message Turnover {
+  message Header {
+    uint32 turnover_id = 1;
+    string turnover_name = 2;
+  }
+  message Template {
+    bool is_alias = 1;
+    biconom.type.Currency alias = 2;
+    repeated biconom.type.Currency currencies = 3;
+  }
+  message Counter {
+    message Value {
+      message Team {
+        message Level {
+          uint32 level = 1;
+          string value = 2;
+        }
+        string total = 1;
+        repeated Level levels = 2;
+      }
+      biconom.type.Currency currency = 1;
+      string self = 2;
+      Team team = 3;
+    }
+    bool is_alias = 1;
+    Value alias = 2;
+    repeated Value currencies = 3;
+  }
+  Header header = 1;
+  oneof unique_field {
+    Template template = 2;
+    Counter counter = 3;
+  }
+}
+
+message IncomePoolLimiter {
+  message Header {
+    uint32 limiter_id = 1;
+    string limiter_name = 2;
+  }
+  message Template {
+    message Value {
+      biconom.type.Currency currency = 1;
+      string limit_value = 2;
+    }
+    bool is_alias = 1;
+    Value alias = 2;
+    repeated Value currencies = 3;
+  }
+  message Counter {
+    message Value {
+      biconom.type.Currency currency = 1;
+      uint32 counter_id = 2;
+      string counter_value = 3;
+      string limit_value = 4;
+      uint32 first_at = 5;
+      uint32 last_at = 6;
+    }
+    bool is_alias = 1;
+    Value alias = 2;
+    repeated Value currencies = 3;
+  }
+  Header header = 1;
+  oneof unique_field {
+    Template template = 2;
+    Counter counter = 3;
+  }
+}

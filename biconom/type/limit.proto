@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/limit;limit_pb";
+
+message Limit {
+  bool unlimited = 1; // безлимитный
+  uint32 limit = 2; // количественное значение лимита
+}

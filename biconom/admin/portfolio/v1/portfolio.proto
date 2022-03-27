@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package biconom.admin.portfolio.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/portfolio/v1;service_admin_portfolio_pb";
+
+service Portfolio {
+  //  TODO: список активов пользователя
+  //  TODO: список NFT пользователя
+  //  TODO: список товаров пользователя
+  //  TODO: список билетов пользователя
+  //  TODO: список талонов пользователя для активации кабинета
+}

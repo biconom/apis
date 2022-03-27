@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package biconom.admin.condition.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/condition/v1;service_admin_condition_pb";
+
+service Condition {
+  // TODO: -
+}

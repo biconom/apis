@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package biconom.client.payment_system.v1;
+
+import "biconom/type/sort.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/payment_system.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/payment_system/v1;service_client_payment_system_pb";
+
+service PaymentSystem {
+  rpc Get (biconom.type.PaymentSystem.ID) returns (biconom.type.PaymentSystem) {} // отобразить (подробные данные) выбранной платежной системы
+  rpc List (PaymentSystemListRequest) returns (stream biconom.type.PaymentSystem) {} // список платежных систем (подробные данные)
+  rpc ListByCurrency (PaymentSystemListByCurrencyRequest) returns (stream biconom.type.PaymentSystem) {} // список платежных систем (подробные данные)
+  rpc HeaderGet (biconom.type.PaymentSystem.ID) returns (biconom.type.PaymentSystem.Header) {} // отобразить данные выбранной платежной системы
+  rpc HeaderList (PaymentSystemListRequest) returns (stream biconom.type.PaymentSystem.Header) {} // список платежных систем
+  rpc HeaderListByCurrency (PaymentSystemListByCurrencyRequest) returns (stream biconom.type.PaymentSystem.Header) {} // список платежных систем использующие выбранную валюту
+  rpc CurrencyGet (biconom.type.PaymentSystem.Option.ID) returns (biconom.type.PaymentSystem.Option) {} // отобразить данные выбранной валюты в платежной системе
+  rpc CurrencyList (PaymentSystemCurrencyListRequest) returns (stream biconom.type.PaymentSystem.Option) {} // список платежных систем и привязанных валют
+  rpc CurrencyListByPaymentSystem (PaymentSystemCurrencyListByPaymentSystemRequest) returns (stream biconom.type.PaymentSystem.Option.Value) {} // список валют в выбранной платежной системе
+}
+
+message PaymentSystemListRequest {
+  biconom.type.PaymentSystem.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message PaymentSystemListByCurrencyRequest {
+  biconom.type.Currency.ID currency = 1;
+  biconom.type.PaymentSystem.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message PaymentSystemCurrencyListRequest {
+  biconom.type.PaymentSystem.Option.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message PaymentSystemCurrencyListByPaymentSystemRequest {
+  biconom.type.PaymentSystem.ID payment_system = 1;
+  biconom.type.Currency.ID step = 2;
+  biconom.type.Sort sort = 3;
+}

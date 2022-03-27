@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/until.proto";
+import "biconom/type/bot_key.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/currency;currency_pb";
+
+message Currency {
+  message ID {
+    oneof unique_field {
+      uint32 currency_id = 1;
+      string currency_name = 2;
+    }
+  }
+  message Pair {
+    message ID {
+      message Currencies {
+        Currency.ID source_currency = 1;
+        Currency.ID target_currency = 2;
+      }
+      oneof unique_field {
+        uint32 currency_pair_id = 1;
+        Currencies currencies = 2;
+      }
+    }
+    message Rate {
+      message Source {
+        message ID {
+          oneof unique_field {
+            uint32 rate_source_id = 1;
+            string rate_source_name = 2;
+          }
+        }
+        message Header {
+          uint32 rate_source_id = 1;
+          string rate_source_name = 2;
+          uint32 created_at = 3;
+          bool published = 4;
+        }
+        message Option {
+          message ID {
+            Currency.Pair.Rate.Source.ID rate_source = 1;
+            Currency.Pair.ID currency_pair = 2;
+          }
+          message Value {
+            Currency.Pair currency_pair = 1;
+            string source_value = 2;
+            string target_value = 3;
+            uint32 modified_at = 4;
+          }
+          Header header = 1;
+          Value value = 2;
+        }
+        message BotKey {
+          message ID {
+            Currency.Pair.Rate.Source.ID rate_source = 1;
+            biconom.type.BotKey.ID bot_key = 2;
+          }
+          Header header = 1;
+          biconom.type.BotKey bot_key = 2;
+        }
+        Header header = 1;
+        repeated Option.Value values = 2;
+      }
+    }
+    uint32 currency_pair_id = 1;
+    Currency source_currency = 2;
+    Currency target_currency = 3;
+    bool published = 4;
+  }
+  uint32 currency_id = 1;
+  string currency_name = 2;
+  uint32 decimal = 3;
+  bool published = 4;
+}

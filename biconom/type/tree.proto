@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/currency;currency_pb";
+
+message Tree {
+  message ID {
+    oneof unique_field {
+      uint32 tree_id = 1;
+      string tree_name = 2;
+    }
+  }
+  message Header {
+    uint32 tree_id = 1;
+    string tree_name = 2;
+    bool published = 3;
+  }
+  Header header = 1;
+}

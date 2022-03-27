@@ -1,0 +1,240 @@
+syntax = "proto3";
+
+package biconom.type;
+//import "google/protobuf/struct.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/condition;condition_pb";
+
+message Condition {
+  message Argument {
+    message Query {
+      message Rank {
+        uint32 bucket_id = 1;
+      }
+      oneof value {
+        Rank rank = 1;
+      }
+    }
+    message Static {
+      message Rank {
+        uint32 bucket_id = 1;
+        uint32 rank_id = 2;
+      }
+      oneof value {
+        Rank rank = 1;
+        //google.protobuf.Value custom_value = 2;
+      }
+    }
+    message Calc {
+      enum Operator {
+        SUM = 0; // сложение
+        SUB = 1; // вычитание
+        MUL = 2; // умножение
+        DIV = 3; // деление
+      }
+      Operator operator = 1;
+      Argument first = 2;
+      Argument second = 3;
+    }
+    oneof value {
+      Query query = 1;
+      Static static = 2;
+      Calc calc = 3;
+    }
+    Static cache_value = 4;
+  }
+  message Target {
+    enum Operator {
+      EQ = 0;
+      NEQ = 1;
+      GT = 2;
+      LT = 3;
+      GTE = 4;
+      LTE = 5;
+    }
+    Operator operator = 1;
+    Argument result = 2;
+  }
+  uint32 condition_id = 1;
+  Argument source = 2;
+  Target target = 3;
+  bool cache_result = 4;
+}
+
+message ConditionOld {
+  message Argument {
+    message Query {
+      message Rank {
+        uint32 bucket_id = 1;
+      }
+      oneof value {
+        Rank rank = 1;
+      }
+    }
+    message Static {
+      message Rank {
+        uint32 bucket_id = 1;
+        uint32 rank_id = 2;
+      }
+      oneof value {
+        Rank rank = 1;
+        //google.protobuf.Value custom_value = 2;
+      }
+    }
+    message Calc {
+      enum Operator {
+        SUM = 0; // сложение
+        SUB = 1; // вычитание
+        MUL = 2; // умножение
+        DIV = 3; // деление
+      }
+      Operator operator = 1;
+      Argument first = 2;
+      Argument second = 3;
+    }
+    oneof value {
+      Query query = 1;
+      Static static = 2;
+      Calc calc = 3;
+    }
+    Static cache_value = 4;
+  }
+  message Target {
+    enum Operator {
+      EQ = 0;
+      NEQ = 1;
+      GT = 2;
+      LT = 3;
+      GTE = 4;
+      LTE = 5;
+    }
+    Operator operator = 1;
+    Argument result = 2;
+  }
+
+  uint32 condition_id = 1;
+  Argument source = 2;
+  Target target = 3;
+  bool cache_result = 4;
+}
+
+message ConditionEvent {
+  uint32 event_id = 1;
+  uint32 condition_id = 2;
+  int64 created_at = 3;
+}
+message ConditionBlock {
+  enum Operator {
+    AND = 0;
+    OR = 1;
+  }
+  message Argument {
+    oneof value {
+      Condition condition = 1;
+      ConditionBlock block = 2;
+    }
+  }
+  uint32 condition_block_id = 1;
+  Operator operator = 2;
+  repeated Argument arguments = 3;
+  bool cache_result = 4;
+}
+message ConditionBucket {
+  message Header {
+    uint32 bucket_id = 1;
+    string comment = 2;
+  }
+  message Target {
+    oneof value {
+      Condition condition = 1;
+      ConditionBlock block = 2;
+    }
+  }
+  Header header = 1;
+  Target target = 2;
+  repeated ConditionEvent events = 3;
+}
+
+
+message Model {
+  message ConditionBlock {
+    uint32 condition_bucket_id = 1;
+    uint32 condition_block_id = 2;
+    uint32 condition_block_ref_id = 3;
+    bool operatorAnd = 4;
+  }
+  message Condition {
+    enum Operator {
+      EQ = 0;
+      NEQ = 1;
+      GT = 2;
+      LT = 3;
+      GTE = 4;
+      LTE = 5;
+    }
+    uint32 condition_bucket_id = 1;
+    uint32 condition_id = 2;
+    uint32 condition_block_id = 3;
+    uint32 source_argument_id = 4;
+    Operator operator = 5;
+    uint32 target_argument_id = 6;
+  }
+  message Argument {
+    enum Kind {
+      Calc = 0;
+      QueryRank = 1;
+      StaticRank = 2;
+    }
+    uint32 condition_bucket_id = 1;
+    uint32 argument_id = 2;
+    Kind kind_id = 3;
+  }
+  message QueryRank {
+    uint32 condition_bucket_id = 1;
+    uint32 argument_id = 2;
+    uint32 rank_bucket_id = 3;
+  }
+  message QueryRankState {
+    uint32 condition_bucket_id = 1;
+    uint32 argument_id = 2;
+    uint32 account_id = 3;
+    uint32 state_enabled = 4;
+    uint32 rank_bucket_id = 5;
+    uint32 rank_id = 6;
+    int64 created_at = 7;
+  }
+  message Calc {
+    enum Operator {
+      SUM = 0; // сложение
+      SUB = 1; // вычитание
+      MUL = 2; // умножение
+      DIV = 3; // деление
+    }
+    enum Kind {
+      Uint = 0;
+    }
+    uint32 condition_bucket_id = 1;
+    uint32 argument_id = 2;
+    Operator operator = 3;
+    repeated uint32 argument_ids = 4;
+    Kind result_kind_id = 5;
+  }
+  message CalcUintState {
+    uint32 condition_bucket_id = 1;
+    uint32 argument_id = 2;
+    uint32 account_id = 3;
+    uint32 state_enabled = 4;
+    uint32 result = 5;
+    int64 created_at = 6;
+  }
+  message StaticRank {
+    uint32 condition_bucket_id = 1;
+    uint32 argument_id = 2;
+    uint32 rank_bucket_id = 3;
+    uint32 rank_id = 4;
+  }
+}
+
+message ConditionExecutionBucket {
+//  TODO: реализовать условие
+}

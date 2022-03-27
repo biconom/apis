@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package biconom.admin.tree.v1;
+
+import "biconom/type/position.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/network/v1;service_admin_tree_pb";
+
+service Tree {
+  rpc Get (google.protobuf.Empty) returns (google.protobuf.Empty) {} // отобразить дерево
+  rpc GetByPosition (biconom.type.Position.ID) returns (google.protobuf.Empty) {} // отобразить данные выбранной сети по позиции
+  rpc List (google.protobuf.Empty) returns (google.protobuf.Empty) {} // список деревьев
+}

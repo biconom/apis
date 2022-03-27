@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package biconom.client.currency.v1;
+
+import "biconom/type/sort.proto";
+import "biconom/type/currency.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/currency/v1;service_client_currency_pb";
+
+service CurrencyPair {
+  rpc Get (biconom.type.Currency.Pair.ID) returns (biconom.type.Currency.Pair) {} // отобразить данные выбранной валютной пары
+  rpc List (CurrencyPairListRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар
+  rpc ListBySource (CurrencyPairListBySourceRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по исходящей валюте
+  rpc ListByTarget (CurrencyPairListByTargetRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по входящей валюте
+  rpc ListByCurrency (CurrencyPairListByCurrencyRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по использованию валюты
+}
+
+message CurrencyPairListRequest {
+  biconom.type.Currency.Pair.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message CurrencyPairListBySourceRequest {
+  biconom.type.Currency.ID source_currency = 1;
+  biconom.type.Currency.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message CurrencyPairListByTargetRequest {
+  biconom.type.Currency.ID target_currency = 1;
+  biconom.type.Currency.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message CurrencyPairListByCurrencyRequest {
+  biconom.type.Currency.ID currency = 1;
+  biconom.type.Sort sort = 2;
+}

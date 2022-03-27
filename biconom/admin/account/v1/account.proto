@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package biconom.admin.account.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/account/v1;service_admin_account_pb";
+
+service Account {
+  rpc AccountGet (google.protobuf.Empty) returns (google.protobuf.Empty) {} // отобразить дерево
+  rpc AccountList (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // отобразить дерево
+  rpc AccountListBySearch (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // отобразить дерево
+  //  TODO: заполнить профиль аккаунта
+  //  TODO: изменить email
+  //  TODO: изменить язык общения
+  //  TODO: изменить пароль
+  //  TODO: установить 2FA
+  //  TODO: активировать 2FA
+  //  TODO: сбросить 2FA
+  //  TODO: статистика счетчиков активности
+  //  TODO: статистика товарооборотов
+  //  TODO: статистика позиций в бинаре всего
+  //  TODO: список значений активных пакетов в каждом из тарифных планов
+  //  TODO: статистика суммарной информации выбранного инвестиционного плана
+  //  TODO: список рандомных товаров из магазина
+  //  TODO: статистика всего заработанного по видам бонусов за выбранный период
+  //  TODO: статистика изменения цены валютной пары
+  //  TODO: статистика изменения прироста партнеров в реферальной структуре
+}

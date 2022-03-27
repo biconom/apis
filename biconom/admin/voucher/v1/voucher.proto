@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package biconom.admin.voucher.v1;
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/voucher/v1;service_admin_voucher_pb";
+
+service Voucher {
+  rpc Get (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: найти информацию по идентификатору ваучера
+  rpc List (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // TODO: список ваучеров
+  rpc ListByAccount (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // TODO: список ваучеров пользователя
+  rpc Create (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: создать ваучер
+  rpc Activate (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: активировать ваучер
+  rpc Reject (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: отменить созданный ваучер
+}

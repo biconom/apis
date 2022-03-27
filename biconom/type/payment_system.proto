@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/currency.proto";
+import "biconom/type/until.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/payment_system;payment_system_pb";
+
+message PaymentSystem {
+  message ID {
+    oneof unique_field {
+      uint32 payment_system_id = 1;
+      string payment_system_name = 2;
+    }
+  }
+  message Header {
+    uint32 payment_system_id = 1;
+    string payment_system_name = 2;
+    bool published = 3;
+  }
+  message Option {
+    message ID {
+      PaymentSystem.ID payment_system = 1;
+      biconom.type.Currency.ID currency = 2;
+    }
+    message Value {
+      biconom.type.Currency currency = 1;
+      bool published = 2;
+    }
+    Header payment_system = 1;
+    Value value = 2;
+  }
+  Header header = 1;
+  repeated Option.Value values = 2;
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package biconom.admin.network.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/activity.proto";
+import "biconom/type/profile.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/network/v1;service_admin_network_pb";
+
+
+service Network {
+  rpc AccountGet (google.protobuf.Empty) returns (google.protobuf.Empty) {} // отобразить дерево
+  rpc AccountList (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // отобразить дерево
+  rpc AccountListBySearch (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // отобразить дерево
+  rpc AccountAttach (google.protobuf.Empty) returns (google.protobuf.Empty) {} // список деревьев
+  rpc ReferralGet (google.protobuf.Empty) returns (google.protobuf.Empty) {} // отобразить дерево
+  rpc ReferralList (google.protobuf.Empty) returns (google.protobuf.Empty) {} // отобразить дерево
+  rpc PartnerGet (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // список деревьев
+  rpc PartnerList (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // список деревьев
+  //  TODO: отобразить список парнеров с выполнений конкретного условия для достежения ранга
+  //  TODO: статистика партнерской сети
+}

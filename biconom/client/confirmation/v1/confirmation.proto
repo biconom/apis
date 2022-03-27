@@ -11,15 +11,28 @@ import "google/protobuf/any.proto";
 option go_package = "github.com/biconom/go-genproto/biconom/client/confirmation/v1;service_client_confirmation_pb";
 
 service Confirmation {
-  rpc GetById (biconom.type.Confirmation.Id) returns (biconom.type.Confirmation) {} // отобразить данные формы подтверждения
-  rpc GetByMethod (biconom.type.Confirmation.Method) returns (biconom.type.Confirmation) {} // отобразить данные формы подтверждения
+  rpc GetConfirmations (biconom.type.Filter) returns (GetConfirmationsResponse) {} // список форм подтверждения
+  rpc GetConfirmation (ConfirmationRequest) returns (biconom.type.Confirmation) {} // отобразить форму подтверждения
+  rpc GetConfirmationLogs (ConfirmationRequest) returns (GetConfirmationLogsResponse) {} // история изменений в форме подтверждения
+  rpc GetConfirmationLog (ConfirmationLogRequest) returns (biconom.type.Confirmation.Log) {} // отобразить запись в истории изменений в форме подтверждения
   rpc GenerateOneTimePassword (GenerateOneTimePasswordRequest) returns (biconom.type.Confirmation.Field.Notification) {} // сгенерировать "OneTimePassword" для поля в форме подтверждения
   rpc Confirm (ConfirmRequest) returns (ConfirmResponse) {} // верифицировать форму подтверждения
-  rpc Cancel (biconom.type.Confirmation.Id) returns (google.protobuf.Empty) {} // отменить форму подтверждения
-  rpc List (biconom.type.Filter) returns (stream biconom.type.Confirmation) {} // список форм подтверждения
-  rpc LogsById (biconom.type.Confirmation.Id) returns (stream biconom.type.Confirmation.Log) {} // история изменений в форме подтверждения
+  rpc Cancel (ConfirmationRequest) returns (google.protobuf.Empty) {} // отменить форму подтверждения
 }
 
+message ConfirmationRequest {
+  oneof unique_field {
+    uint64 confirmation_id = 1;
+    biconom.type.Confirmation.Method.Id method_id = 2;
+  }
+}
+message ConfirmationLogRequest {
+  oneof unique_field {
+    uint64 confirmation_id = 1;
+    biconom.type.Confirmation.Method.Id method_id = 2;
+  }
+  uint32 log_id = 3;
+}
 message ConfirmRequest {
   biconom.type.Agent agent = 1; // данные об клиет-агенте с которого выполняется запрос
   biconom.type.Confirmation.Id confirmation_id = 2; // идентификатор формы подтверждения
@@ -34,4 +47,10 @@ message GenerateOneTimePasswordRequest {
   biconom.type.Agent agent = 1; // данные об клиет-агенте с которого выполняется запрос
   biconom.type.Confirmation.Id confirmation_id = 2; // идентификатор формы подтверждения
   uint32 field_id = 3; // идентификатор поля
+}
+message GetConfirmationsResponse {
+  repeated biconom.type.Confirmation confirmations = 1;
+}
+message GetConfirmationLogsResponse {
+  repeated biconom.type.Confirmation.Log logs = 1;
 }
