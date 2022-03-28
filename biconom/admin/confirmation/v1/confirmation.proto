@@ -2,14 +2,8 @@ syntax = "proto3";
 
 package biconom.admin.confirmation.v1;
 
-import "google/protobuf/empty.proto";
-
 option go_package = "github.com/biconom/go-genproto/biconom/admin/confirmation/v1;service_admin_confirmation_pb";
 
 service Confirmation {
-  //  TODO: отобразить подтверждение
-  //  TODO: валидировать подтверждение
-  //  TODO: отменить подтверждение
-  //  TODO: список подтверждений
-  //  TODO: отправить одноразовый код для выбранного поля формы подтверждения
+  //  TODO: функционал для работы с подтверждениями других пользователей
 }

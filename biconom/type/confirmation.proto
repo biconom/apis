@@ -15,11 +15,14 @@ message Confirmation {
     CANCELED = 3;
     EXPIRED = 4;
   }
-  message Id {
-    uint64 id = 1;
+  message ID {
+    oneof unique_field {
+      uint32 confirmation_id = 1;
+      Method.ID method_id = 2;
+    }
   }
   message Method {
-    enum Id {
+    enum ID {
       CUSTOM = 0;
       SIGN_IN = 1; // авторизация
       SIGN_UP = 2; // регистрация
@@ -36,10 +39,10 @@ message Confirmation {
       ACTIVATE_SECURITY_GOOGLE_AUTHENTICATOR = 13; // активировать 2FA
       DEACTIVATE_SECURITY_GOOGLE_AUTHENTICATOR = 14; // деактивировать 2FA
     }
-    Id method_id = 2;
+    ID method_id = 2;
   }
   message Field {
-    enum Type {
+    enum Kind {
       UNKNOWN = 0;
       PASSWORD = 1; // пароль
       PASSWORD_NEW = 2; // новый пароль (используется при смене пароля)
@@ -58,14 +61,14 @@ message Confirmation {
       string comment = 2;
     }
     message Notification {
-      int64 next_at = 1; // отображает разрешенное время после которого возможно отправить новый код
-      int64 created_at = 2; // отображает время создания текущего кода
-      int64 expires_at = 3; // отображает время после которого отправленный токен будет не валидный
+      uint32 next_at = 1; // отображает разрешенное время после которого возможно отправить новый код
+      uint32 created_at = 2; // отображает время создания текущего кода
+      uint32 expires_at = 3; // отображает время после которого отправленный токен будет не валидный
       uint32 counter_limit = 4; // отображает лимит доступных уведомлений
       uint32 counter_value = 5; // отображает количество отправленных уведомлений с кодом подтверждения
     }
     uint32 field_id = 1; // идентификатор поля
-    Type type_id = 2; // тип поля
+    Kind kind_id = 2; // тип поля
     Status status = 3; // статус поля
     biconom.type.Contact contact = 4; // контакт, используется при CONTACT_CONFIRM_CODE и CONTACT_FILL
     Notification notification = 5; // используется при CONTACT_CONFIRM_CODE
@@ -74,23 +77,36 @@ message Confirmation {
     repeated uint32 field_ids = 1; // список идентификаторов полей "field_id" обязательные для подтверждения формы
   }
   message Log {
-    message Event {
-      message Type {
-        enum Id {
-          UNKNOWN = 0;
-        }
-        Id event_type = 1;
+    message ID {
+      message Inner {
+        uint32 log_id = 1;
       }
-      Type.Id event_type = 1;
-      google.protobuf.Any data = 2;
+      uint32 confirmation_id = 1;
+      uint32 log_id = 2;
+    }
+    message Kind {
+      enum ID {
+        UNKNOWN = 0;
+      }
+      ID kind_id = 1;
+    }
+    message Event {
+      message Test {
+        string comment = 1;
+      }
+      oneof unique_field {
+        google.protobuf.Any any = 1;
+        Test test = 2;
+      }
     }
     uint32 log_id = 1;
-    int64 created_at = 2;
+    Kind.ID kind_id = 2;
     Event event = 3;
+    uint32 created_at = 4;
   }
 
-  uint64 id = 1;
-  Method.Id method_id = 2;
+  uint32 confirmation_id = 1;
+  Method.ID method_id = 2;
   Status status_id = 3;
   uint32 created_at = 4;
   uint32 expires_at = 5;

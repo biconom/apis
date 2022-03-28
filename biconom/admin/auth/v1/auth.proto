@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package biconom.admin.auth.v1;
+
+import "biconom/type/agent.proto";
+import "biconom/type/contact.proto";
+import "biconom/type/profile.proto";
+import "biconom/type/confirmation.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/auth/v1;service_admin_auth_pb";
+
+service Auth {
+  rpc SignIn (SignInRequest) returns (Response) {} // авторизация
+  rpc SignAttach (SignAttachRequest) returns (Response) {} // закрепить регистрационные данные
+}
+
+message SignInRequest {
+  biconom.type.Agent agent = 1; // данные об клиет-агенте с которого выполняется запрос
+  biconom.type.Contact contact = 2; // канал через который осуществляется идентификация
+  string password = 3; // пароль от аккаунта
+}
+message SignAttachRequest {
+  biconom.type.Contact contact = 1; // канал через который будет осуществляется идентификация
+  biconom.type.Profile.Data profile = 2; // данные профиля пользователя
+  string password = 3; // пароль для аккаунта
+  string locale = 4; // идентификатор языка (ru-RU, en-US, ...)
+}
+message Response {
+  enum Code {
+    SUCCESS = 0; // успешно
+    ATTACH_STEP = 1; // перейти на этап привязки регистрационных данных
+    CONFIRMATION_STEP = 2; // перейти на этап валидации формы подтверждения
+  }
+  Code code = 1; // код ответа
+  string access_token = 2; // токен доступа (используется в заголовке "authorization: X.Y.Z" для вызова авторизованных API запросов)
+  biconom.type.Confirmation confirmation = 3; // форма подтверждения
+}

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package biconom.client.confirmation.v1;
+package biconom.admin.confirmation.v1;
 
 import "biconom/type/agent.proto";
 import "biconom/type/confirmation.proto";
@@ -8,38 +8,38 @@ import "biconom/type/sort.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/any.proto";
 
-option go_package = "github.com/biconom/go-genproto/biconom/client/confirmation/v1;service_client_confirmation_pb";
+option go_package = "github.com/biconom/go-genproto/biconom/admin/confirmation/v1;service_admin_confirmation_pb";
 
-service Confirmation {
+service ConfirmationSelf {
   rpc Get (biconom.type.Confirmation.ID) returns (biconom.type.Confirmation) {} // отобразить данные выбранной формы подтверждения
-  rpc List (ConfirmationListRequest) returns (stream biconom.type.Confirmation) {} // список форм подтверждений
+  rpc List (ConfirmationSelfListRequest) returns (stream biconom.type.Confirmation) {} // список форм подтверждений
   rpc LogGet (biconom.type.Confirmation.Log.ID) returns (biconom.type.Confirmation.Log) {} // отобразить данные выбранной лога формы подтверждения
-  rpc LogListByConfirmation (ConfirmationLogListByConfirmationRequest) returns (stream biconom.type.Confirmation.Log) {} // список логов выбранной формы подтверждения
-  rpc GenerateOneTimePassword (ConfirmationGenerateOneTimePasswordRequest) returns (biconom.type.Confirmation.Field.Notification) {} // сгенерировать "OneTimePassword" для выбранного поля формы подтверждения
-  rpc Confirm (ConfirmationConfirmRequest) returns (ConfirmationConfirmResponse) {} // верифицировать выбранную форму подтверждения
+  rpc LogListByConfirmation (ConfirmationSelfLogListByConfirmationRequest) returns (stream biconom.type.Confirmation.Log) {} // список логов выбранной формы подтверждения
+  rpc GenerateOneTimePassword (ConfirmationSelfGenerateOneTimePasswordRequest) returns (biconom.type.Confirmation.Field.Notification) {} // сгенерировать "OneTimePassword" для выбранного поля формы подтверждения
+  rpc Confirm (ConfirmationSelfConfirmRequest) returns (ConfirmationSelfConfirmResponse) {} // верифицировать выбранную форму подтверждения
   rpc Cancel (biconom.type.Confirmation.ID) returns (google.protobuf.Empty) {} // отменить выбранную форму подтверждения
 }
 
-message ConfirmationListRequest {
+message ConfirmationSelfListRequest {
   biconom.type.Confirmation.ID step = 1;
   biconom.type.Sort sort = 2;
 }
-message ConfirmationLogListByConfirmationRequest {
+message ConfirmationSelfLogListByConfirmationRequest {
   biconom.type.Confirmation.ID confirmation = 1;
   biconom.type.Confirmation.Log.ID.Inner step = 2;
   biconom.type.Sort sort = 3;
 }
-message ConfirmationGenerateOneTimePasswordRequest {
+message ConfirmationSelfGenerateOneTimePasswordRequest {
   biconom.type.Agent agent = 1; // данные об клиет-агенте с которого выполняется запрос
   biconom.type.Confirmation.ID confirmation = 2; // идентификатор формы подтверждения
   uint32 field_id = 3; // идентификатор поля
 }
-message ConfirmationConfirmRequest {
+message ConfirmationSelfConfirmRequest {
   biconom.type.Agent agent = 1; // данные об клиет-агенте с которого выполняется запрос
   biconom.type.Confirmation.ID confirmation = 2; // идентификатор формы подтверждения
   map<uint32, string> field_values = 3; // map key is "field_id"
 }
-message ConfirmationConfirmResponse {
+message ConfirmationSelfConfirmResponse {
   bool success = 1;
   map<uint32, biconom.type.Confirmation.Field.Status> field_statuses = 2; // map key is "field_id"
   google.protobuf.Any metadata = 3;
