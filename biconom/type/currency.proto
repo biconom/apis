@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package biconom.type;
 
-import "biconom/type/until.proto";
 import "biconom/type/bot_key.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/currency;currency_pb";
