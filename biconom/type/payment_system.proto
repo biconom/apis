@@ -3,7 +3,6 @@ syntax = "proto3";
 package biconom.type;
 
 import "biconom/type/currency.proto";
-import "biconom/type/until.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/payment_system;payment_system_pb";
 

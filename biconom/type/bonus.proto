@@ -3,11 +3,11 @@ syntax = "proto3";
 package biconom.type;
 import "biconom/type/currency.proto";
 
-import "biconom/type/activity.proto";
-import "biconom/type/contact.proto";
-import "biconom/type/condition.proto";
-import "biconom/type/profile.proto";
-import "biconom/type/rank_system.proto";
+//import "biconom/type/activity.proto";
+//import "biconom/type/contact.proto";
+//import "biconom/type/condition.proto";
+//import "biconom/type/profile.proto";
+//import "biconom/type/rank_system.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/bonus;bonus_pb";
 

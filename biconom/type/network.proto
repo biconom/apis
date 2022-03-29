@@ -4,7 +4,7 @@ package biconom.type;
 
 import "biconom/type/account.proto";
 import "biconom/type/activity.proto";
-import "biconom/type/condition.proto";
+//import "biconom/type/condition.proto";
 import "biconom/type/contact.proto";
 import "biconom/type/rank_system.proto";
 
