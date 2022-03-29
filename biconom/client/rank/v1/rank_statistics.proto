@@ -2,20 +2,20 @@ syntax = "proto3";
 
 package biconom.client.rank.v1;
 
-import "biconom/type/account.proto";
 import "biconom/type/rank_system.proto";
+import "biconom/type/rank_statistics.proto";
 import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/client/rank/v1;service_client_rank_pb";
 
 // RankStatistics - сервис отображения статистических данных ранговой системы
 service RankStatistics {
-  rpc AccountCountGet (biconom.type.RankSystem.Rank.ID) returns (RankStatisticsAccountCount) {} // отобразить показатель количества пользователей аггрегированные по выбранному рангу
-  rpc AccountCountList (RankStatisticsAccountCountListRequest) returns (stream RankStatisticsAccountCount) {} // список показателей количества пользователей аггрегированные по рангам
-  rpc AccountCountListByRankSystem (RankStatisticsAccountCountListByRankSystemRequest) returns (stream RankStatisticsAccountCount) {} // список показателей количества пользователей аггрегированные по рангам в выбранной ранговой системе
-  rpc AccountTopRankGet (RankStatisticsAccountTop.ID) returns (RankStatisticsAccountTop) {} // отобразить топ аккаунтов по выбранному рангу
-  rpc AccountTopRankList (RankStatisticsAccountTopRankListRequest) returns (stream RankStatisticsAccountTop) {} // список из значений топ аккаунтов по выбранному рангу
-  rpc AccountTopRankListByRankSystem (RankStatisticsAccountTopRankListByRankSystemRequest) returns (stream RankStatisticsAccountTop) {} // список из значений топ аккаунтов по выбранной ранговой системе
+  rpc AccountCountGet (biconom.type.RankSystem.Rank.ID) returns (biconom.type.RankStatistics.AccountCount) {} // отобразить показатель количества пользователей аггрегированные по выбранному рангу
+  rpc AccountCountList (RankStatisticsAccountCountListRequest) returns (stream biconom.type.RankStatistics.AccountCount) {} // список показателей количества пользователей аггрегированные по рангам
+  rpc AccountCountListByRankSystem (RankStatisticsAccountCountListByRankSystemRequest) returns (stream biconom.type.RankStatistics.AccountCount) {} // список показателей количества пользователей аггрегированные по рангам в выбранной ранговой системе
+  rpc AccountTopRankGet (biconom.type.RankStatistics.AccountTop.ID) returns (biconom.type.RankStatistics.AccountTop) {} // отобразить топ аккаунтов по выбранному рангу
+  rpc AccountTopRankList (RankStatisticsAccountTopRankListRequest) returns (stream biconom.type.RankStatistics.AccountTop) {} // список из значений топ аккаунтов по выбранному рангу
+  rpc AccountTopRankListByRankSystem (RankStatisticsAccountTopRankListByRankSystemRequest) returns (stream biconom.type.RankStatistics.AccountTop) {} // список из значений топ аккаунтов по выбранной ранговой системе
 }
 
 message RankStatisticsAccountCountListRequest {
@@ -38,20 +38,3 @@ message RankStatisticsAccountTopRankListByRankSystemRequest {
   biconom.type.RankSystem.Rank.ID step = 3;
   biconom.type.Sort sort = 4;
 }
-message RankStatisticsAccountCount {
-  biconom.type.RankSystem.Rank.Header rank = 1;
-  uint32 account_count = 2;
-}
-message RankStatisticsAccountTop {
-  message ID {
-    biconom.type.RankSystem.Rank.ID rank = 1;
-    uint32 top_limit = 2;
-  }
-  message Account {
-    biconom.type.Account.Header account = 1;
-    uint32 achieved_at = 2;
-  }
-  biconom.type.RankSystem.Header rank = 1;
-  repeated Account accounts = 2;
-}
-

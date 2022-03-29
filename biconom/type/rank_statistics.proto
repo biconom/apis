@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package biconom.type;
+import "biconom/type/account.proto";
+import "biconom/type/rank_system.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/rank_statistics;rank_statistics_pb";
+
+message RankStatistics {
+  message AccountCount {
+    biconom.type.RankSystem.Rank.Header rank = 1;
+    uint32 account_count = 2;
+  }
+  message AccountTop {
+    message ID {
+      biconom.type.RankSystem.Rank.ID rank = 1;
+      uint32 top_limit = 2;
+    }
+    message Account {
+      biconom.type.Account.Header account = 1;
+      uint32 achieved_at = 2;
+    }
+    biconom.type.RankSystem.Header rank = 1;
+    repeated Account accounts = 2;
+  }
+}
