@@ -3,7 +3,7 @@ syntax = "proto3";
 package biconom.type;
 import "biconom/type/condition.proto";
 
-option go_package = "github.com/biconom/go-genproto/biconom/type/rank;rank_pb";
+option go_package = "github.com/biconom/go-genproto/biconom/type/rank_system;rank_system_pb";
 
 message RankSystem {
   message ID {
