@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package biconom.admin.rank.v1;
+package biconom.client.rank.v1;
 
 import "biconom/type/account.proto";
 import "biconom/type/rank_system.proto";
 import "biconom/type/sort.proto";
 
-option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
+option go_package = "github.com/biconom/go-genproto/biconom/client/rank/v1;service_client_rank_pb";
 
 service RankSystemAccount {
   rpc Get (biconom.type.Account.RankSystem.ID) returns (biconom.type.Account.RankSystem) {} // отобразить ранговую систему с списком рангов выбранного аккаунта
@@ -21,7 +21,6 @@ message RankSystemAccountListRequest {
   biconom.type.Account.ID account = 1;
   biconom.type.RankSystem.ID step = 2;
   biconom.type.Sort sort = 3;
-  bool only_published_rank_system = 4;
 }
 message RankSystemAccountWithRankActivatedAndNextResponse {
   biconom.type.RankSystem.Header header = 1;

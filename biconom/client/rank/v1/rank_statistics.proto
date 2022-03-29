@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package biconom.admin.rank.v1;
+package biconom.client.rank.v1;
 
 import "biconom/type/account.proto";
 import "biconom/type/rank_system.proto";
 import "biconom/type/sort.proto";
 
-option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
+option go_package = "github.com/biconom/go-genproto/biconom/client/rank/v1;service_client_rank_pb";
 
 // RankStatistics - сервис отображения статистических данных ранговой системы
 service RankStatistics {
@@ -54,3 +54,4 @@ message RankStatisticsAccountTop {
   biconom.type.RankSystem.Header rank = 1;
   repeated Account accounts = 2;
 }
+

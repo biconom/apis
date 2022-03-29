@@ -3,7 +3,7 @@ syntax = "proto3";
 package biconom.client.network.v1;
 
 import "biconom/type/session.proto";
-import "biconom/type/rank.proto";
+import "biconom/type/rank_system.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/client/network/v1;service_client_network_pb";

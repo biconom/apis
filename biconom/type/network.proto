@@ -6,7 +6,7 @@ import "biconom/type/account.proto";
 import "biconom/type/activity.proto";
 import "biconom/type/condition.proto";
 import "biconom/type/contact.proto";
-import "biconom/type/rank.proto";
+import "biconom/type/rank_system.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/network;network_pb";
 
