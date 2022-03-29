@@ -11,6 +11,8 @@ service Currency {
   rpc Get (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отобразить данные выбранной валюты
   rpc List (CurrencyListRequest) returns (stream biconom.type.Currency) {} // список валют
   rpc Create (CurrencyCreateRequest) returns (biconom.type.Currency) {} // саздать валюту
+  rpc Publish (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // назначить публичный доступ к валюте
+  rpc Unpublish (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отменить публичный доступ к валюте
 }
 
 message CurrencyListRequest {

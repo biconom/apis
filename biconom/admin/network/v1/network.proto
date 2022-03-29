@@ -11,7 +11,8 @@ option go_package = "github.com/biconom/go-genproto/biconom/admin/network/v1;ser
 
 
 service Network {
-  rpc AccountGet (google.protobuf.Empty) returns (google.protobuf.Empty) {} // отобразить дерево
+  rpc AccountGet (biconom.type.Account.ID) returns (google.protobuf.Empty) {} // отобразить данные аккаунта
+
   rpc AccountList (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // отобразить дерево
   rpc AccountListBySearch (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // отобразить дерево
   rpc AccountAttach (google.protobuf.Empty) returns (google.protobuf.Empty) {} // список деревьев
@@ -21,4 +22,8 @@ service Network {
   rpc PartnerList (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // список деревьев
   //  TODO: отобразить список парнеров с выполнений конкретного условия для достежения ранга
   //  TODO: статистика партнерской сети
+}
+
+service NetworkAccount {
+
 }

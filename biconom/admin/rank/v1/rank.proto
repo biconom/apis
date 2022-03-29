@@ -2,28 +2,45 @@ syntax = "proto3";
 
 package biconom.admin.rank.v1;
 
-import "biconom/type/account.proto";
 import "biconom/type/rank.proto";
 import "biconom/type/condition.proto";
-import "google/protobuf/empty.proto";
+import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
 
 service Rank {
-  rpc GetBuckets (google.protobuf.Empty) returns (GetBucketsResponse) {} // Отобразить список ранговых систем
-  rpc GetBucket (biconom.type.RankBucket.Id) returns (biconom.type.RankBucket) {} // Отобразить данные ранговой системы
-  rpc GetBucketRanks (biconom.type.RankBucket.Id) returns (GetBucketRanksResponse) {} // Отобразить список рангов в ранговой системе
-  rpc GetBucketRank (BucketRankRequest) returns (biconom.type.Rank) {} // Отобразить данные ранга в ранговой системе
-  rpc GetBucketRankConditionBucket (BucketRankRequest) returns (biconom.type.ConditionBucket) {} // Отобразить условия для достижения ранга в ранговой системе
+  rpc Get (biconom.type.RankSystem.Rank.ID) returns (biconom.type.RankSystem.Option) {} // отобразить ранг
+  rpc List (RankListRequest) returns (stream biconom.type.RankSystem.Option) {} // список рангов
+  rpc ListByRankSystem (RankListByRankSystemRequest) returns (stream biconom.type.RankSystem.Option) {} // список рангов в выбранной ранговой системе
+  rpc ValueGet (biconom.type.RankSystem.Rank.ID) returns (biconom.type.RankSystem.Rank) {} // отобразить ранг
+  rpc ValueList (RankListRequest) returns (stream biconom.type.RankSystem.Rank) {} // список рангов
+  rpc ValueListByRankSystem (RankListByRankSystemRequest) returns (stream biconom.type.RankSystem.Rank) {} // список рангов в выбранной ранговой системе
+  rpc ValueHeaderGet (biconom.type.RankSystem.Rank.ID) returns (biconom.type.RankSystem.Rank.Header) {} // отобразить ранг
+  rpc ValueHeaderList (RankListRequest) returns (stream biconom.type.RankSystem.Rank.Header) {} // список рангов
+  rpc ValueHeaderListByRankSystem (RankListByRankSystemRequest) returns (stream biconom.type.RankSystem.Rank.Header) {} // список рангов в выбранной ранговой системе
+  rpc Create (RankCreateRequest) returns (biconom.type.RankSystem.Option) {} // создать ранг в выбранной ранговой системе
+  rpc ConditionGet (biconom.type.RankSystem.Rank.ID) returns (biconom.type.Condition) {} // отобразить условие достижения для выбранного ранга
+  rpc ConditionAttach (RankConditionAttachRequest) returns (biconom.type.RankSystem.Rank) {} // установить условие достижения для выбранного ранга
+}
 
-  rpc GetAccountBuckets (biconom.type.Account.Id) returns (GetAccountBucketsResponse) {} // Отобразить список ранговых систем (выбранного аккаунта)
-  rpc GetAccountBucket (AccountBucketRequest) returns (biconom.type.Account.WrappedRankBucket) {} // Отобразить данные ранговой системы (выбранного аккаунта)
-  rpc GetAccountBucketRanks (AccountBucketRequest) returns (GetAccountBucketRanksResponse) {} // Отобразить список рангов в ранговой системе (выбранного аккаунта)
-  rpc GetAccountBucketRank (AccountBucketRankRequest) returns (biconom.type.Account.WrappedRank) {} // Отобразить данные ранга в ранговой системе (выбранного аккаунта)
-  rpc GetAccountBucketRankConditionBucket (AccountBucketRankRequest) returns (biconom.type.ConditionBucket) {} // Отобразить условия для достижения ранга в ранговой системе (выбранного аккаунта)
-  // Ранг
-  //  TODO: статистика ранговой системы
-  //  TODO: список всех ранговых систем
-  //  TODO: список всех рангов в выбранной ранговой системе
-  //  TODO: данные текущего ранга в выбранной ранговой системе
+message RankListRequest {
+  biconom.type.RankSystem.Rank.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool only_published_rank_system = 3;
+}
+message RankListByRankSystemRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.RankSystem.Rank.ID.Inner step = 2;
+  biconom.type.Sort sort = 3;
+  bool only_published_rank_system = 4;
+}
+message RankCreateRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  string rank_name = 2;
+  uint32 stars = 3;
+  biconom.type.Condition.Template.ID condition_template = 4;
+}
+message RankConditionAttachRequest {
+  biconom.type.RankSystem.Rank.ID rank = 1;
+  biconom.type.Condition.Template.ID condition_template = 2;
 }

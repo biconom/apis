@@ -15,21 +15,23 @@ message RankSystem {
   message Header {
     uint32 rank_system_id = 1;
     string rank_system_name = 2;
+    bool published = 3;
   }
   message Rank {
     message ID {
-      message RankName {
-        RankSystem.ID rank_system = 1;
-        string rank_name = 2;
+      message Inner {
+        oneof unique_field {
+          string rank_name = 1;
+          uint32 rank_stars = 2;
+        }
       }
-      message RankStars {
+      message Option {
         RankSystem.ID rank_system = 1;
-        uint32 stars = 2;
+        Inner rank = 2;
       }
       oneof unique_field {
         uint32 rank_id = 1;
-        RankName rank_name = 2;
-        RankStars rank_stars = 3;
+        Option rank_option = 2;
       }
     }
     message Header {
@@ -38,7 +40,7 @@ message RankSystem {
       uint32 stars = 3;
     }
     Header header = 1;
-    biconom.type.ConditionExecutionBucket condition_execution_bucket = 2;
+    biconom.type.Condition.Template condition_template = 2;
   }
   message Option {
     Header header = 1;

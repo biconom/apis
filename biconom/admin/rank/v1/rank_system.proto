@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package biconom.admin.rank.v1;
+
+import "biconom/type/rank.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
+
+service RankSystem {
+  rpc Get (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem) {} // отобразить ранговую систему
+  rpc List (RankSystemListRequest) returns (stream biconom.type.RankSystem) {} // список ранговых систем
+  rpc HeaderGet (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // отобразить ранговую систему
+  rpc HeaderList (RankSystemListRequest) returns (stream biconom.type.RankSystem.Header) {} // список ранговых систем
+  rpc Create (RankSystemCreateRequest) returns (biconom.type.RankSystem) {} // создать ранговую систему
+  rpc Publish (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // назначить публичный доступ к ранговой системе
+  rpc Unpublish (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // отменить публичный доступ к ранговой системе
+}
+
+message RankSystemListRequest {
+  biconom.type.RankSystem.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool only_published_rank_system = 3;
+}
+message RankSystemCreateRequest {
+  string rank_system_name = 1;
+  bool published = 2;
+}

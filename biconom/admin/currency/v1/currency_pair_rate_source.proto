@@ -13,6 +13,8 @@ service CurrencyPairRateSource {
   rpc List (CurrencyPairRateSourceListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source) {} // список источников с их списками курсов валют
   rpc ListByPair (CurrencyPairRateSourceListByPairRequest) returns (stream biconom.type.Currency.Pair.Rate.Source) {} // список источников с их списками курсов валют (с использованием выбранной пары)
   rpc Create (CurrencyPairRateSourceCreateRequest) returns (biconom.type.Currency.Pair.Rate.Source) {} // создать источник курсов валют
+  rpc Publish (biconom.type.Currency.Pair.Rate.Source.ID) returns (biconom.type.Currency.Pair.Rate.Source.Header) {} // назначить публичный доступ к источнику курсов валют
+  rpc Unpublish (biconom.type.Currency.Pair.Rate.Source.ID) returns (biconom.type.Currency.Pair.Rate.Source.Header) {} // отменить публичный доступ к источнику курсов валют
   rpc HeaderGet (biconom.type.Currency.Pair.Rate.Source.ID) returns (biconom.type.Currency.Pair.Rate.Source.Header) {} // отобразить данные выбранного источника курсов валют
   rpc HeaderList (CurrencyPairRateSourceListRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Header) {} // список источников курсов валют
   rpc HeaderListByPair (CurrencyPairRateSourceListByPairRequest) returns (stream biconom.type.Currency.Pair.Rate.Source.Header) {} // список источников курсов валют (с использованием выбранной пары)
@@ -45,7 +47,7 @@ message CurrencyPairRateSourceListByPairRequest {
 }
 message CurrencyPairRateSourceCreateRequest {
   string rate_source_name = 1;
-  bool published = 3;
+  bool published = 2;
 }
 message CurrencyPairRateSourceHeaderRenameRequest {
   biconom.type.Currency.Pair.Rate.Source.ID source = 1;

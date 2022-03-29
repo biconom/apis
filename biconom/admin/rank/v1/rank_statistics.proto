@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package biconom.admin.rank.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/rank.proto";
+import "biconom/type/condition.proto";
+import "biconom/type/sort.proto";
+import "biconom/type/limit.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
+
+service RankStatistics {
+  rpc RankAccountCountGet (biconom.type.RankSystem.Rank.ID) returns (RankStatisticsAccountCountGetByRankResponse) {} // отобразить показатель количества пользователей аггрегированные по выбранному рангу
+  rpc RankAccountCountList (RankStatisticsRankAccountCountListRequest) returns (stream RankStatisticsAccountCountGetByRankResponse) {} // список показателей количества пользователей аггрегированные по рангам
+  rpc RankAccountCountListByRankSystem (RankStatisticsRankAccountCountListByRankSystemRequest) returns (stream RankStatisticsAccountCountGetByRankResponse) {} // список показателей количества пользователей аггрегированные по рангам в выбранной ранговой системе
+  rpc RankAccountTopGetByRank (RankStatisticsRankAccountTopGetByRankRequest) returns (RankStatisticsRankAccountTopByRankResponse) {} // отобразить топ аккаунтов по выбранному рангу
+  rpc RankAccountTopListByRank (RankStatisticsRankAccountTopListByRankRequest) returns (stream RankStatisticsRankAccountTopByRankResponse) {} // список из значений топ аккаунтов по выбранному рангу
+  rpc RankAccountTopListByRankSystem (RankStatisticsRankAccountTopListByRankSystemRequest) returns (stream RankStatisticsRankAccountTopByRankResponse) {} // список из значений топ аккаунтов по выбранной ранговой системе
+}
+
+message RankStatisticsAccountCountGetByRankResponse {
+  biconom.type.RankSystem.Rank.Header header = 1;
+  uint32 account_count = 2;
+}
+message RankStatisticsRankAccountCountListRequest {
+  biconom.type.RankSystem.Rank.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message RankStatisticsRankAccountCountListByRankSystemRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.RankSystem.Rank.ID.Inner step = 2;
+  biconom.type.Sort sort = 3;
+}
+message RankStatisticsRankAccountTopByRankResponse {
+  message Account {
+    biconom.type.Account.Header account = 1;
+    uint32 achieved_at = 2;
+  }
+  biconom.type.RankSystem.Rank.Header rank = 1;
+  repeated Account accounts = 2;
+}
+message RankStatisticsRankAccountTopGetByRankRequest {
+  biconom.type.RankSystem.Rank.ID rank = 1;
+  biconom.type.Limit top_limit = 2;
+}
+message RankStatisticsRankAccountTopListByRankRequest {
+  biconom.type.RankSystem.Rank.ID step = 1;
+  biconom.type.Sort sort = 2;
+  biconom.type.Limit top_limit = 3;
+}
+message RankStatisticsRankAccountTopListByRankSystemRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.Limit top_limit = 2;
+}

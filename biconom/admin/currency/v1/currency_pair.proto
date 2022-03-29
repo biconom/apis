@@ -14,6 +14,8 @@ service CurrencyPair {
   rpc ListByTarget (CurrencyPairListByTargetRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по входящей валюте
   rpc ListByCurrency (CurrencyPairListByCurrencyRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по использованию валюты
   rpc Create (CurrencyPairCreateRequest) returns (biconom.type.Currency.Pair) {} // создать валютную пару
+  rpc Publish (biconom.type.Currency.Pair.ID) returns (biconom.type.Currency.Pair) {} // назначить публичный доступ к валютной паре
+  rpc Unpublish (biconom.type.Currency.Pair.ID) returns (biconom.type.Currency.Pair) {} // отменить публичный доступ к валютной паре
 }
 
 message CurrencyPairListRequest {

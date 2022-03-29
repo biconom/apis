@@ -2,14 +2,25 @@ syntax = "proto3";
 
 package biconom.type;
 
-import "biconom/type/tree.proto";
+import "biconom/type/account.proto";
+import "biconom/type/activity.proto";
+import "biconom/type/condition.proto";
+import "biconom/type/contact.proto";
+import "biconom/type/rank.proto";
 
-option go_package = "github.com/biconom/go-genproto/biconom/type/currency;currency_pb";
+option go_package = "github.com/biconom/go-genproto/biconom/type/network;network_pb";
 
 message Network {
-  message ID {
-    uint32 network_id = 1;
+  message Account {
+
+    biconom.type.Account.Header account = 1;
+    biconom.type.Account.Header referral = 2;
+    repeated biconom.type.Contact contacts = 3;
+    repeated biconom.type.RankSystem rank_systems = 5;
+    repeated biconom.type.Activity activity_counters = 6;
+    //  TODO: статистика партнерской сети
+    //  TODO: статистика товарооборотов
+    //  TODO: статистика позиций в бинаре всего
+    //  TODO: список значений активных пакетов в каждом из тарифных планов
   }
-  uint32 network_id = 1;
-  repeated Tree.Header trees = 2;
 }

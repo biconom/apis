@@ -5,7 +5,7 @@ package biconom.type;
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/condition;condition_pb";
 
-message Condition {
+/*message XCondition {
   message Argument {
     message Query {
       message Rank {
@@ -61,7 +61,7 @@ message Condition {
   bool cache_result = 4;
 }
 
-message ConditionOld {
+message XConditionOld {
   message Argument {
     message Query {
       message Rank {
@@ -118,12 +118,12 @@ message ConditionOld {
   bool cache_result = 4;
 }
 
-message ConditionEvent {
+message XConditionEvent {
   uint32 event_id = 1;
   uint32 condition_id = 2;
   int64 created_at = 3;
 }
-message ConditionBlock {
+message XConditionBlock {
   enum Operator {
     AND = 0;
     OR = 1;
@@ -139,7 +139,7 @@ message ConditionBlock {
   repeated Argument arguments = 3;
   bool cache_result = 4;
 }
-message ConditionBucket {
+message XConditionBucket {
   message Header {
     uint32 bucket_id = 1;
     string comment = 2;
@@ -153,10 +153,10 @@ message ConditionBucket {
   Header header = 1;
   Target target = 2;
   repeated ConditionEvent events = 3;
-}
+}*/
 
 
-message Model {
+/*message Model {
   message ConditionBlock {
     uint32 condition_bucket_id = 1;
     uint32 condition_block_id = 2;
@@ -233,8 +233,23 @@ message Model {
     uint32 rank_bucket_id = 3;
     uint32 rank_id = 4;
   }
-}
+}*/
 
-message ConditionExecutionBucket {
-//  TODO: реализовать условие
+message Condition {
+  message Template {
+    message ID {
+      uint32 condition_id = 1;
+    }
+    uint32 condition_id = 1;
+  }
+  message Execution {
+    message ID {
+      uint32 condition_id = 1;
+    }
+    uint32 condition_id = 1;
+    bool done = 2;
+    uint32 done_at = 3;
+  }
+  Template template = 1;
+  Execution execution = 2;
 }

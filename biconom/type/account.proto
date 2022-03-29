@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 package biconom.type;
-import "biconom/type/activity.proto";
 import "biconom/type/contact.proto";
 import "biconom/type/condition.proto";
 import "biconom/type/profile.proto";
@@ -22,20 +21,32 @@ message Account {
     uint32 created_at = 3;
     uint32 confirmed_at = 4;
   }
+  message RankSystem {
+    message ID {
+      Account.ID account = 1;
+      biconom.type.RankSystem.ID rank_system = 2;
+    }
+    message Rank {
+      message ID {
+        Account.ID account = 1;
+        biconom.type.RankSystem.Rank.ID rank = 2;
+      }
+      biconom.type.RankSystem.Rank.Header header = 1;
+      biconom.type.Condition condition = 2;
+      bool achieved = 3;
+      uint32 achieved_at = 4;
+      bool activated = 5;
+    }
+    message Option {
+      biconom.type.RankSystem.Header header = 1;
+      Rank rank = 2;
+    }
+    biconom.type.RankSystem.Header header = 1;
+    repeated Rank ranks = 2;
+  }
   message Header {
     uint32 account_id = 1;
     string account_login = 2;
     biconom.type.Profile profile = 3;
-  }
-  message Details {
-    Account.Header account = 1;
-    Account.Header referral = 2;
-    repeated Contact contacts = 4;
-    repeated biconom.type.RankSystem rank_systems = 5;
-    repeated biconom.type.Activity activity_counters = 6;
-    //  TODO: статистика партнерской сети
-    //  TODO: статистика товарооборотов
-    //  TODO: статистика позиций в бинаре всего
-    //  TODO: список значений активных пакетов в каждом из тарифных планов
   }
 }

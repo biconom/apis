@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package biconom.admin.rank.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/rank.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
+
+service RankSystemAccount {
+  rpc Get (biconom.type.Account.RankSystem.ID) returns (biconom.type.Account.RankSystem) {} // отобразить ранговую систему с списком рангов выбранного аккаунта
+  rpc List (RankSystemAccountListRequest) returns (stream biconom.type.Account.RankSystem) {} // список ранговых систем с списком рангов выбранного аккаунта
+  rpc GetWithRankActivated (biconom.type.Account.RankSystem.ID) returns (biconom.type.Account.RankSystem.Option) {} // отобразить значение текущего ранга в выбранной ранговой системе
+  rpc ListWithRankActivated (RankSystemAccountListRequest) returns (stream biconom.type.Account.RankSystem.Option) {} // список ранговых систем с значением текущего ранга выбранного аккаунта
+  rpc GetWithRankActivatedAndNext (biconom.type.Account.RankSystem.ID) returns (RankSystemAccountWithRankActivatedAndNextResponse) {} // отобразить значения текущего и следующего рангов в выбранной ранговой системе
+  rpc ListWithRankActivatedAndNext (RankSystemAccountListRequest) returns (stream RankSystemAccountWithRankActivatedAndNextResponse) {} // список ранговых систем с значениями текущего и следующего рангов выбранного аккаунта
+}
+
+message RankSystemAccountListRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.RankSystem.ID step = 2;
+  biconom.type.Sort sort = 3;
+  bool only_published_rank_system = 4;
+}
+message RankSystemAccountWithRankActivatedAndNextResponse {
+  biconom.type.RankSystem.Header header = 1;
+  biconom.type.Account.RankSystem.Rank rank_activated = 2;
+  biconom.type.Account.RankSystem.Rank rank_next = 3;
+}
