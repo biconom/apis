@@ -2,8 +2,11 @@ syntax = "proto3";
 
 package biconom.type;
 
+import "biconom/type/account.proto";
+import "biconom/type/bot_key.proto";
+import "biconom/type/currency.proto";
 import "biconom/type/payment_system.proto";
-import "biconom/type/until.proto";
+import "google/protobuf/any.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/wallet;wallet_pb";
 
@@ -14,26 +17,152 @@ message Wallet {
       string wallet_name = 2;
     }
   }
+  message Currency {
+    message ID {
+      biconom.type.Wallet.ID wallet = 1;
+      biconom.type.Currency.ID currency = 2;
+    }
+    message Header {
+      biconom.type.Wallet.Header wallet = 1;
+      biconom.type.Currency.Header currency = 2;
+    }
+    message Settings {
+      bool published = 1;
+    }
+    message Amount {
+      message ID {
+        biconom.type.Wallet.ID wallet = 1;
+        biconom.type.Currency.ID currency = 2;
+        string amount = 3;
+      }
+      biconom.type.Wallet.Header wallet = 1;
+      biconom.type.Currency.Header currency = 2;
+      string amount = 3;
+    }
+    message Transaction {
+      message ID {
+        biconom.type.Wallet.ID wallet = 1;
+        biconom.type.Currency.ID currency = 2;
+        uint32 transaction_id = 3;
+      }
+      message Kind {
+        enum ID {
+          REVOKE = 0; // отмена операции
+          EARNED = 1; // заработано
+          SPENT = 2; // потрачено
+          DEPOSIT = 3; // пополнение
+          WITHDRAWAL = 4; // вывод
+          VOUCHER_DEPOSIT = 5; // пополнение через ваучер
+          VOUCHER_WITHDRAWAL = 6; // вывод через создание ваучера
+          WALLET_TRANSFER_DEPOSIT = 7; // перевод между кошельками (получение)
+          WALLET_TRANSFER_WITHDRAWAL = 8; // перевод между кошельками (отправка)
+        }
+        ID kind_id = 1;
+      }
+      message Header {
+        biconom.type.Wallet.Header wallet = 1;
+        biconom.type.Currency.Header currency = 2;
+        uint32 transaction_id = 3;
+        string transaction_amount = 4;
+        bool transaction_success = 5;
+        Kind.ID transaction_kind_id = 6;
+        string balance_after = 7;
+        biconom.type.Account.Header account = 8;
+      }
+      Header header = 1;
+      google.protobuf.Any details = 2;
+    }
+    Header header = 1;
+    Settings settings = 2;
+    repeated Transaction transactions = 3;
+  }
   message PaymentSystem {
-    Wallet.ID wallet = 1;
-    biconom.type.PaymentSystem.ID payment_system = 2;
+    message ID {
+      biconom.type.Wallet.ID wallet = 1;
+      biconom.type.PaymentSystem.ID payment_system = 2;
+    }
+    message Header {
+      biconom.type.Wallet.Header wallet = 1;
+      biconom.type.PaymentSystem.Header payment_system = 2;
+    }
+    message Settings {
+      bool published = 1;
+    }
+    message Currency {
+      message ID {
+        biconom.type.Wallet.ID wallet = 1;
+        biconom.type.PaymentSystem.ID payment_system = 2;
+        biconom.type.Currency.ID currency = 3;
+      }
+      message Header {
+        biconom.type.Wallet.Header wallet = 1;
+        biconom.type.PaymentSystem.Header payment_system = 2;
+        biconom.type.Currency.Header currency = 3;
+      }
+      message Settings {
+        bool published = 1;
+      }
+      message Transaction {
+        message ID {
+          biconom.type.Wallet.ID wallet = 1;
+          biconom.type.PaymentSystem.ID payment_system = 2;
+          biconom.type.Currency.ID currency = 3;
+          uint32 transaction_id = 4;
+        }
+        message Status {
+          enum ID {
+            STOPPED = 0; // ожидает одобрения
+            REJECTED = 1; // заявка отклонена
+            APPROVED = 2; // заявка подтверждена
+            PROCESSING = 3; // заявка в процессе обработки
+            SUCCESS = 4; // заявка обработана успешно
+            CANCELED = 5; // заявка отменена
+            BURIED = 6; // заявка похоронена
+          }
+          ID transaction_status_id = 1;
+        }
+        message Header {
+          biconom.type.Wallet.Header wallet = 1;
+          biconom.type.PaymentSystem.Header payment_system = 2;
+          biconom.type.Currency.Header currency = 3;
+          uint32 transaction_id = 4;
+          string transaction_amount = 5;
+          Status.ID transaction_status_id = 6;
+          biconom.type.Account.Header account = 7;
+          google.protobuf.Any metadata = 8;
+        }
+        Header header = 1;
+        google.protobuf.Any details = 2;
+      }
+      Header header = 1;
+      Settings settings = 2;
+      repeated Transaction deposit_transactions = 3;
+      repeated Transaction withdrawal_transactions = 4;
+    }
     message BotKey {
       message ID {
-        biconom.type.PaymentSystem.ID payment_system = 1;
-        uint32 bot_key_id = 2;
+        biconom.type.Wallet.ID wallet = 1;
+        biconom.type.PaymentSystem.ID payment_system = 2;
+        biconom.type.BotKey.ID bot_key = 3;
       }
-      uint32 wallet_id = 1;
-      uint32 payment_system_id = 2;
-      uint32 bot_key_id = 3;
-      string bot_key_title = 4;
-      string token = 5;
-      biconom.type.Until ttl = 6;
-      repeated string ip_masks = 7;
+      biconom.type.Wallet.Header wallet = 1;
+      biconom.type.PaymentSystem.Header payment_system = 2;
+      biconom.type.BotKey bot_key = 3;
     }
+    Header header = 1;
+    Settings settings = 2;
+    repeated biconom.type.Currency.Header currencies = 3;
+    repeated biconom.type.BotKey bot_keys = 4;
   }
   message Header {
     uint32 wallet_id = 1;
     string wallet_name = 2;
-    bool published = 3;
   }
+  message Settings {
+    bool published = 1;
+  }
+  Header header = 1;
+  Settings settings = 2;
+  repeated biconom.type.Currency.Header currencies = 3;
+  repeated biconom.type.PaymentSystem.Header payment_systems = 4;
 }

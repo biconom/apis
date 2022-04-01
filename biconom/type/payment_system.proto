@@ -16,20 +16,26 @@ message PaymentSystem {
   message Header {
     uint32 payment_system_id = 1;
     string payment_system_name = 2;
-    bool published = 3;
   }
-  message Option {
+  message Settings {
+    bool published = 1;
+  }
+  message Currency {
     message ID {
-      PaymentSystem.ID payment_system = 1;
+      biconom.type.PaymentSystem.ID payment_system = 1;
       biconom.type.Currency.ID currency = 2;
     }
-    message Value {
-      biconom.type.Currency currency = 1;
-      bool published = 2;
+    message Header {
+      biconom.type.PaymentSystem.Header payment_system = 1;
+      biconom.type.Currency currency = 2;
     }
-    Header payment_system = 1;
-    Value value = 2;
+    message Settings {
+      bool published = 1;
+    }
+    Header header = 1;
+    Settings settings = 3;
   }
   Header header = 1;
-  repeated Option.Value values = 2;
+  Settings settings = 2;
+  repeated Currency currencies = 3;
 }

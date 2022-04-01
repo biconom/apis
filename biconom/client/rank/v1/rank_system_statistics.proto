@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package biconom.client.rank.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/rank_system.proto";
+import "biconom/type/rank_statistics.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/rank/v1;service_client_rank_pb";
+
+service RankSystemStatistics {
+  rpc AccountQuantityGet (RankSystemStatisticsAccountQuantityGetRequest) returns (biconom.type.RankStatistics.AccountQuantity) {} // список показателей количества пользователей аггрегированные по рангам в выбранной ранговой системе
+  rpc AccountQuantityList (RankSystemStatisticsAccountQuantityListRequest) returns (stream biconom.type.RankStatistics.AccountQuantity) {} // список показателей количества пользователей аггрегированные по рангам в выбранной ранговой системе
+  rpc RankAccountQuantityGet (biconom.type.Rank.ID) returns (biconom.type.RankStatistics.AccountQuantity.Rank) {} // отобразить показатель количества пользователей аггрегированные по выбранному рангу
+  rpc RankAccountQuantityList (RankSystemStatisticsRankAccountQuantityListRequest) returns (stream biconom.type.RankStatistics.AccountQuantity.Rank) {} // список показателей количества пользователей аггрегированные по выбранному рангу
+
+  rpc AccountTopGet (RankSystemStatisticsAccountTopGetRequest) returns (biconom.type.RankStatistics.AccountTop) {} // список показателей топ аккаунтов аггрегированные по рангам в выбранной ранговой системе
+  rpc AccountTopList (RankSystemStatisticsAccountTopListRequest) returns (stream biconom.type.RankStatistics.AccountTop) {} // список показателей топ аккаунтов аггрегированные по рангам в выбранной ранговой системе
+  rpc RankAccountTopGet (biconom.type.RankStatistics.AccountTop.Rank.ID) returns (biconom.type.RankStatistics.AccountTop.Rank) {} // отобразить показатель топ аккаунтов аггрегированные по выбранному рангу
+  rpc RankAccountTopList (RankSystemStatisticsRankAccountTopListRequest) returns (stream biconom.type.RankStatistics.AccountTop.Rank) {} // список показателей топ аккаунтов аггрегированные по выбранному рангу
+}
+
+message RankSystemStatisticsAccountQuantityGetRequest {
+  biconom.type.Account.ID referral = 1;
+  biconom.type.RankSystem.ID rank_system = 2;
+  biconom.type.Sort rank_sort = 3;
+}
+message RankSystemStatisticsAccountQuantityListRequest {
+  biconom.type.Account.ID referral = 1;
+  biconom.type.RankSystem.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Sort rank_sort = 4;
+}
+message RankSystemStatisticsRankAccountQuantityListRequest {
+  biconom.type.Account.ID referral = 1;
+  biconom.type.RankSystem.ID rank_system = 2;
+  biconom.type.Rank.ID.Inner step = 3;
+  biconom.type.Sort sort = 4;
+}
+
+message RankSystemStatisticsAccountTopGetRequest {
+  biconom.type.Account.ID referral = 1;
+  biconom.type.RankSystem.ID rank_system = 2;
+  biconom.type.Sort rank_sort = 3;
+  uint32 top_limit = 4;
+}
+message RankSystemStatisticsAccountTopListRequest {
+  biconom.type.Account.ID referral = 1;
+  biconom.type.RankSystem.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Sort rank_sort = 4;
+  uint32 top_limit = 5;
+}
+message RankSystemStatisticsRankAccountTopListRequest {
+  biconom.type.Account.ID referral = 1;
+  biconom.type.RankSystem.ID rank_system = 2;
+  biconom.type.Rank.ID.Inner step = 3;
+  biconom.type.Sort sort = 4;
+}

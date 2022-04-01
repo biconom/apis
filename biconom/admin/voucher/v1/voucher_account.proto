@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package biconom.admin.voucher.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/confirmation.proto";
+import "biconom/type/voucher.proto";
+import "biconom/type/product.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/voucher/v1;service_admin_voucher_pb";
+
+service VoucherAccount {
+  rpc Get (VoucherAccountVoucherRequest) returns (biconom.type.Voucher) {} // отобразить выбранный ваучер
+  rpc List (VoucherAccountListRequest) returns (stream biconom.type.Voucher) {} // список ваучеров владельца
+  rpc ListByFilter (VoucherAccountListByFilterRequest) returns (stream biconom.type.Voucher) {} // список ваучеров владельца (фильтрация событий по статусам)
+  rpc Reject (VoucherAccountVoucherRequest) returns (VoucherAccountConfirmationResponse) {} // отменить созданный ваучер
+  rpc HistoryGet (VoucherAccountHistoryGetRequest) returns (biconom.type.VoucherHistory) {} // отобразить событие обработки ваучеров
+  rpc HistoryList (VoucherAccountHistoryListRequest) returns (stream biconom.type.VoucherHistory) {} // список событий обработки ваучеров
+  rpc HistoryListByFilter (VoucherAccountHistoryListByFilterRequest) returns (stream biconom.type.VoucherHistory) {} // список событий обработки ваучеров (фильтрация событий по статусам)
+}
+
+message VoucherAccountVoucherRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.Voucher.ID voucher = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherAccountListRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.Voucher.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
+}
+message VoucherAccountListByFilterRequest {
+  biconom.type.Account.ID account = 1;
+  repeated biconom.type.Voucher.Status.ID status_filter = 2;
+  biconom.type.Voucher.ID step = 3;
+  biconom.type.Sort sort = 4;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 5;
+}
+message VoucherAccountConfirmationResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.Voucher voucher = 2;
+  biconom.type.Confirmation confirmation = 3;
+}
+message VoucherAccountHistoryGetRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.VoucherHistory.ID voucher_history = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherAccountHistoryListRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.VoucherHistory.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
+}
+message VoucherAccountHistoryListByFilterRequest {
+  biconom.type.Account.ID account = 1;
+  repeated biconom.type.VoucherHistory.ID status_filter = 2;
+  biconom.type.VoucherHistory.ID step = 3;
+  biconom.type.Sort sort = 4;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 5;
+}

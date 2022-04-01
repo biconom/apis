@@ -15,37 +15,39 @@ message RankSystem {
   message Header {
     uint32 rank_system_id = 1;
     string rank_system_name = 2;
-    bool published = 3;
   }
-  message Rank {
-    message ID {
-      message Inner {
-        oneof unique_field {
-          string rank_name = 1;
-          uint32 rank_stars = 2;
-        }
-      }
-      message Option {
-        RankSystem.ID rank_system = 1;
-        Inner rank = 2;
-      }
-      oneof unique_field {
-        uint32 rank_id = 1;
-        Option rank_option = 2;
-      }
-    }
-    message Header {
-      uint32 rank_id = 1;
-      string rank_name = 2;
-      uint32 stars = 3;
-    }
-    Header header = 1;
-    biconom.type.Condition.Template condition_template = 2;
+  message Settings {
+    bool published = 1;
   }
-  message Option {
-    Header header = 1;
-    Rank rank = 2;
-  }
+
   Header header = 1;
-  repeated Rank ranks = 2;
+  Settings settings = 2;
+  repeated biconom.type.Rank ranks = 3;
+}
+
+message Rank {
+  message ID {
+    message Inner {
+      oneof unique_field {
+        string rank_name = 1;
+        uint32 rank_stars = 2;
+      }
+    }
+    biconom.type.RankSystem.ID rank_system = 1;
+    Inner rank = 2;
+  }
+  message Header {
+    uint32 rank_id = 1;
+    string rank_name = 2;
+    uint32 stars = 3;
+  }
+
+  Header header = 1;
+  biconom.type.RankSystem.Header rank_system = 2;
+  biconom.type.Condition.Template condition_template = 3;
+}
+
+message RankSystemRank {
+  biconom.type.RankSystem.Header rank_system = 1;
+  biconom.type.Rank.Header rank = 2;
 }

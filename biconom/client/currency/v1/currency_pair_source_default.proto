@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package biconom.client.currency.v1;
+
+import "biconom/type/confirmation.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
+import "biconom/type/time_point.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/currency/v1;service_client_currency_pb";
+
+service CurrencyPairSourceDefault {
+  rpc Get (biconom.type.CurrencyPair.ID) returns (biconom.type.CurrencyPairSource.Header) {} // отобразить источник по умолчанию для выбранной валютной пары
+  rpc List (CurrencyPairSourceDefaultListRequest) returns (stream biconom.type.CurrencyPairSourceDefault) {} // список валютных пар с привязанным источником по умолчанию
+  rpc RateGet (CurrencyPairSourceDefaultRateGetRequest) returns (biconom.type.CurrencyPairSourceRate) {} // отобразить значениее курса из источника по умолчанию для выбранной валютной пары
+  rpc RateList (CurrencyPairSourceDefaultRateListRequest) returns (stream biconom.type.CurrencyPairSourceRate) {} // список валютных пар с значением курса из привязанного источника по умолчанию
+  rpc RateTimeframeGet (biconom.type.CurrencyPairSourceRateTimeframe.ID) returns (biconom.type.CurrencyPairSourceRateTimeframe) {} // отобразить агрегированные данные об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+  rpc RateTimeframeList (CurrencyPairSourceDefaultRateTimeframeListRequest) returns (stream biconom.type.CurrencyPairSourceRateTimeframe) {} // список агрегированных временных отрезков данных об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+}
+
+message CurrencyPairSourceDefaultListRequest {
+  biconom.type.CurrencyPair.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message CurrencyPairSourceDefaultRateGetRequest {
+  biconom.type.CurrencyPair.ID currency_pair = 1;
+  bool show_currency_pair_source = 2;
+  bool show_currency_pair = 3;
+}
+message CurrencyPairSourceDefaultRateListRequest {
+  biconom.type.CurrencyPair.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool show_currency_pair_source = 3;
+}
+message CurrencyPairSourceDefaultRateTimeframeListRequest {
+  biconom.type.CurrencyPair.ID currency_pair = 1;
+  biconom.type.TimePoint timeframe_start_at = 2;
+  biconom.type.TimePoint timeframe_end_at = 3;
+  uint32 timeframe_seconds = 4;
+  biconom.type.Sort sort = 5;
+}

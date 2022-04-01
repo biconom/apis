@@ -2,63 +2,76 @@ syntax = "proto3";
 
 package biconom.admin.payment_system.v1;
 
-import "biconom/type/sort.proto";
+import "biconom/type/confirmation.proto";
 import "biconom/type/currency.proto";
 import "biconom/type/payment_system.proto";
-import "google/protobuf/empty.proto";
+import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/admin/payment_system/v1;service_admin_payment_system_pb";
 
 service PaymentSystem {
-  rpc Get (biconom.type.PaymentSystem.ID) returns (biconom.type.PaymentSystem) {} // отобразить (подробные данные) выбранной платежной системы
+  rpc Get (PaymentSystemGetRequest) returns (biconom.type.PaymentSystem) {} // отобразить (подробные данные) выбранной платежной системы
   rpc List (PaymentSystemListRequest) returns (stream biconom.type.PaymentSystem) {} // список платежных систем (подробные данные)
   rpc ListByCurrency (PaymentSystemListByCurrencyRequest) returns (stream biconom.type.PaymentSystem) {} // список платежных систем (подробные данные)
-  rpc Create (PaymentSystemCreateRequest) returns (biconom.type.PaymentSystem) {} // создать платежную систему
-  rpc Publish (biconom.type.PaymentSystem.ID) returns (biconom.type.PaymentSystem.Header) {} // назначить публичный доступ к платежной системе
-  rpc Unpublish (biconom.type.PaymentSystem.ID) returns (biconom.type.PaymentSystem.Header) {} // отменить публичный доступ к платежной системе
-  rpc HeaderGet (biconom.type.PaymentSystem.ID) returns (biconom.type.PaymentSystem.Header) {} // отобразить данные выбранной платежной системы
-  rpc HeaderList (PaymentSystemListRequest) returns (stream biconom.type.PaymentSystem.Header) {} // список платежных систем
-  rpc HeaderListByCurrency (PaymentSystemListByCurrencyRequest) returns (stream biconom.type.PaymentSystem.Header) {} // список платежных систем использующие выбранную валюту
-  rpc CurrencyGet (biconom.type.PaymentSystem.Option.ID) returns (biconom.type.PaymentSystem.Option) {} // отобразить данные выбранной валюты в платежной системе
-  rpc CurrencyList (PaymentSystemCurrencyListRequest) returns (stream biconom.type.PaymentSystem.Option) {} // список платежных систем и привязанных валют
-  rpc CurrencyListByPaymentSystem (PaymentSystemCurrencyListByPaymentSystemRequest) returns (stream biconom.type.PaymentSystem.Option.Value) {} // список валют в выбранной платежной системе
-  rpc CurrencyAttach (PaymentSystemCurrencyAttachRequest) returns (biconom.type.PaymentSystem.Option) {} // присоединить валюту к выбранной платежной системе
-  rpc CurrencyDetach (biconom.type.PaymentSystem.Option.ID) returns (google.protobuf.Empty) {} // отсоединить валюту к выбранной платежной системе
-  rpc CurrencyPublish (biconom.type.PaymentSystem.Option.ID) returns (biconom.type.PaymentSystem.Option.Value) {} // назначить публичный доступ к валюте в платежной системе
-  rpc CurrencyUnpublish (biconom.type.PaymentSystem.Option.ID) returns (biconom.type.PaymentSystem.Option.Value) {} // отменить публичный доступ к валюте в платежной системе
+  rpc Create (PaymentSystemCreateRequest) returns (PaymentSystemResponse) {} // создать платежную систему
+  rpc Rename (PaymentSystemRenameRequest) returns (PaymentSystemResponse) {} // создать платежную систему
+  rpc Publish (biconom.type.PaymentSystem.ID) returns (PaymentSystemResponse) {} // назначить публичный доступ к платежной системе
+  rpc Unpublish (biconom.type.PaymentSystem.ID) returns (PaymentSystemResponse) {} // отменить публичный доступ к платежной системе
+  rpc CurrencyGet (biconom.type.PaymentSystem.Currency.ID) returns (biconom.type.PaymentSystem.Currency) {} // отобразить данные выбранной валюты в платежной системе
+  rpc CurrencyListByPaymentSystem (PaymentSystemCurrencyListByPaymentSystemRequest) returns (stream biconom.type.PaymentSystem.Currency) {} // список валют в выбранной платежной системе
+  rpc CurrencyAttach (PaymentSystemCurrencyAttachRequest) returns (PaymentSystemCurrencyResponse) {} // присоединить валюту к выбранной платежной системе
+  rpc CurrencyDetach (biconom.type.PaymentSystem.Currency.ID) returns (PaymentSystemCurrencyResponse) {} // отсоединить валюту к выбранной платежной системе
+  rpc CurrencyPublish (biconom.type.PaymentSystem.Currency.ID) returns (PaymentSystemCurrencyResponse) {} // назначить публичный доступ к валюте в платежной системе
+  rpc CurrencyUnpublish (biconom.type.PaymentSystem.Currency.ID) returns (PaymentSystemCurrencyResponse) {} // отменить публичный доступ к валюте в платежной системе
 }
 
+message PaymentSystemGetRequest {
+  biconom.type.PaymentSystem.ID payment_system = 1;
+  biconom.type.Sort currency_sort = 2;
+}
 message PaymentSystemListRequest {
   biconom.type.PaymentSystem.ID step = 1;
   biconom.type.Sort sort = 2;
-  bool only_published_payment_system = 3;
+  biconom.type.Sort currency_sort = 3;
 }
 message PaymentSystemListByCurrencyRequest {
   biconom.type.Currency.ID currency = 1;
   biconom.type.PaymentSystem.ID step = 2;
   biconom.type.Sort sort = 3;
-  bool only_published_payment_system = 4;
-  bool only_published_option_currency = 5;
 }
 message PaymentSystemCreateRequest {
   string payment_system_name = 1;
   bool published = 2;
 }
-message PaymentSystemCurrencyListRequest {
-  biconom.type.PaymentSystem.Option.ID step = 1;
-  biconom.type.Sort sort = 2;
-  bool only_published_payment_system = 3;
-  bool only_published_option_currency = 4;
+message PaymentSystemRenameRequest {
+  biconom.type.PaymentSystem.ID payment_system = 1;
+  string payment_system_name = 2;
+}
+message PaymentSystemResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.PaymentSystem payment_system = 2;
+  biconom.type.Confirmation confirmation = 3;
 }
 message PaymentSystemCurrencyListByPaymentSystemRequest {
   biconom.type.PaymentSystem.ID payment_system = 1;
   biconom.type.Currency.ID step = 2;
   biconom.type.Sort sort = 3;
-  bool only_published_payment_system = 4;
-  bool only_published_option_currency = 5;
 }
 message PaymentSystemCurrencyAttachRequest {
   biconom.type.PaymentSystem.ID payment_system = 1;
   biconom.type.Currency.ID currency = 2;
   bool published = 3;
+}
+message PaymentSystemCurrencyResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.PaymentSystem.Currency payment_system_currency = 2;
+  biconom.type.Confirmation confirmation = 3;
 }

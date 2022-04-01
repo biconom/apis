@@ -9,15 +9,28 @@ import "biconom/type/sort.proto";
 option go_package = "github.com/biconom/go-genproto/biconom/client/rank/v1;service_client_rank_pb";
 
 service RankSystemAccount {
-  rpc Get (biconom.type.Account.RankSystem.ID) returns (biconom.type.Account.RankSystem) {} // отобразить ранговую систему с списком рангов выбранного аккаунта
+  rpc Get (RankSystemAccountGetRequest) returns (biconom.type.Account.RankSystem) {} // отобразить ранговую систему с списком рангов выбранного аккаунта
   rpc List (RankSystemAccountListRequest) returns (stream biconom.type.Account.RankSystem) {} // список ранговых систем с списком рангов выбранного аккаунта
-  rpc GetWithRankActivated (biconom.type.Account.RankSystem.ID) returns (biconom.type.Account.RankSystem.Option) {} // отобразить значение текущего ранга в выбранной ранговой системе
-  rpc ListWithRankActivated (RankSystemAccountListRequest) returns (stream biconom.type.Account.RankSystem.Option) {} // список ранговых систем с значением текущего ранга выбранного аккаунта
+  rpc GetWithRankActivated (biconom.type.Account.RankSystem.ID) returns (biconom.type.Account.RankSystem.Rank) {} // отобразить значение текущего ранга в выбранной ранговой системе
+  rpc ListWithRankActivated (RankSystemAccountListFilterRequest) returns (stream biconom.type.Account.RankSystem.Rank) {} // список ранговых систем с значением текущего ранга выбранного аккаунта
   rpc GetWithRankActivatedAndNext (biconom.type.Account.RankSystem.ID) returns (RankSystemAccountWithRankActivatedAndNextResponse) {} // отобразить значения текущего и следующего рангов в выбранной ранговой системе
-  rpc ListWithRankActivatedAndNext (RankSystemAccountListRequest) returns (stream RankSystemAccountWithRankActivatedAndNextResponse) {} // список ранговых систем с значениями текущего и следующего рангов выбранного аккаунта
+  rpc ListWithRankActivatedAndNext (RankSystemAccountListFilterRequest) returns (RankSystemAccountWithRankActivatedAndNextResponse) {} // список ранговых систем с значениями текущего и следующего рангов выбранного аккаунта
+  rpc RankGet (biconom.type.Account.RankSystem.Rank.ID) returns (biconom.type.Account.RankSystem.Rank) {} // отобразить значением выбраного ранга
+  rpc RankListByRankSystem (RankSystemAccountRankListByRankSystemRequest) returns (stream biconom.type.Account.RankSystem.Rank) {} // список рангов в выбранной ранговой системе
 }
 
+message RankSystemAccountGetRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.RankSystem.ID rank_system = 2;
+  biconom.type.Sort rank_sort = 3;
+}
 message RankSystemAccountListRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.RankSystem.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Sort rank_sort = 4;
+}
+message RankSystemAccountListFilterRequest {
   biconom.type.Account.ID account = 1;
   biconom.type.RankSystem.ID step = 2;
   biconom.type.Sort sort = 3;
@@ -26,4 +39,10 @@ message RankSystemAccountWithRankActivatedAndNextResponse {
   biconom.type.RankSystem.Header header = 1;
   biconom.type.Account.RankSystem.Rank rank_activated = 2;
   biconom.type.Account.RankSystem.Rank rank_next = 3;
+}
+message RankSystemAccountRankListByRankSystemRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.RankSystem.ID rank_system = 2;
+  biconom.type.Rank.ID.Inner step = 3;
+  biconom.type.Sort sort = 4;
 }

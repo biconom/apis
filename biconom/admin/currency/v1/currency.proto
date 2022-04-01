@@ -2,26 +2,40 @@ syntax = "proto3";
 
 package biconom.admin.currency.v1;
 
-import "biconom/type/sort.proto";
+import "biconom/type/confirmation.proto";
 import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/admin/currency/v1;service_admin_currency_pb";
 
 service Currency {
-  rpc Get (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отобразить данные выбранной валюты
+  rpc Get (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отобразить валюту
   rpc List (CurrencyListRequest) returns (stream biconom.type.Currency) {} // список валют
-  rpc Create (CurrencyCreateRequest) returns (biconom.type.Currency) {} // саздать валюту
-  rpc Publish (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // назначить публичный доступ к валюте
-  rpc Unpublish (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отменить публичный доступ к валюте
+  rpc Create (CurrencyCreateRequest) returns (CurrencyResponse) {} // саздать валюту
+  rpc Rename (CurrencyRenameRequest) returns (CurrencyResponse) {} // переименовать валюту
+  rpc Publish (biconom.type.Currency.ID) returns (CurrencyResponse) {} // назначить валюте публичный доступ
+  rpc Unpublish (biconom.type.Currency.ID) returns (CurrencyResponse) {} // отменить валюте публичный доступ
 }
 
 message CurrencyListRequest {
   biconom.type.Currency.ID step = 1;
   biconom.type.Sort sort = 2;
-  bool only_published_currency = 3;
 }
 message CurrencyCreateRequest {
   string currency_name = 1;
   uint32 decimal = 2;
   bool published = 3;
+}
+message CurrencyRenameRequest {
+  biconom.type.Currency.ID currency = 1;
+  string currency_name = 2;
+}
+message CurrencyResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.Currency currency = 2;
+  biconom.type.Confirmation confirmation = 3;
 }

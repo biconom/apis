@@ -2,27 +2,79 @@ syntax = "proto3";
 
 package biconom.admin.rank.v1;
 
+import "biconom/type/condition.proto";
+import "biconom/type/confirmation.proto";
 import "biconom/type/rank_system.proto";
 import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/admin/rank/v1;service_admin_rank_pb";
 
 service RankSystem {
-  rpc Get (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem) {} // отобразить ранговую систему
+  rpc Get (RankSystemGetRequest) returns (biconom.type.RankSystem) {} // отобразить ранговую систему
   rpc List (RankSystemListRequest) returns (stream biconom.type.RankSystem) {} // список ранговых систем
-  rpc HeaderGet (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // отобразить ранговую систему
-  rpc HeaderList (RankSystemListRequest) returns (stream biconom.type.RankSystem.Header) {} // список ранговых систем
-  rpc Create (RankSystemCreateRequest) returns (biconom.type.RankSystem) {} // создать ранговую систему
-  rpc Publish (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // назначить публичный доступ к ранговой системе
-  rpc Unpublish (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // отменить публичный доступ к ранговой системе
+  rpc Create (RankSystemCreateRequest) returns (RankSystemResponse) {} // создать ранговую систему
+  rpc Rename (RankSystemRenameRequest) returns (RankSystemResponse) {} // создать ранговую систему
+  rpc Publish (biconom.type.RankSystem.ID) returns (RankSystemResponse) {} // назначить публичный доступ ранговой системе
+  rpc Unpublish (biconom.type.RankSystem.ID) returns (RankSystemResponse) {} // отменить публичный доступ ранговой системе
+  rpc RankGet (biconom.type.Rank.ID) returns (biconom.type.Rank) {} // отобразить ранг
+  rpc RankListByRankSystem (RankSystemRankListByRankSystemRequest) returns (stream biconom.type.Rank) {} // список рангов в выбранной ранговой системе
+  rpc RankCreate (RankSystemRankCreateRequest) returns (RankSystemRankResponse) {} // создать ранг в выбранной ранговой системе
+  rpc RankDelete (biconom.type.Rank.ID) returns (RankSystemRankResponse) {} // удалить ранг
+  rpc RankRename (RankSystemRankRenameRequest) returns (RankSystemRankResponse) {} // создать ранг в выбранной ранговой системе
+  rpc RankConditionTemplateGet (biconom.type.Rank.ID) returns (biconom.type.Condition.Template) {} // отобразить условие достижения для ранга в выбранной ранговой системе
+  rpc RankConditionTemplateAttach (RankSystemRankConditionTemplateAttachRequest) returns (RankSystemRankResponse) {} // установить условие достижения для ранга в выбранной ранговой системе
 }
 
+message RankSystemGetRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.Sort rank_sort = 2;
+}
 message RankSystemListRequest {
   biconom.type.RankSystem.ID step = 1;
   biconom.type.Sort sort = 2;
-  bool only_published_rank_system = 3;
+  biconom.type.Sort rank_sort = 3;
 }
 message RankSystemCreateRequest {
   string rank_system_name = 1;
   bool published = 2;
+}
+message RankSystemRenameRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  string rank_system_name = 2;
+}
+message RankSystemResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.RankSystem rank_system = 2;
+  biconom.type.Confirmation confirmation = 3;
+}
+message RankSystemRankListByRankSystemRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.Rank.ID.Inner step = 2;
+  biconom.type.Sort sort = 3;
+}
+message RankSystemRankCreateRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  string rank_name = 2;
+  biconom.type.Condition.Template.ID condition_template = 3;
+}
+message RankSystemRankRenameRequest {
+  biconom.type.Rank.ID rank = 1;
+  string rank_name = 2;
+}
+message RankSystemRankConditionTemplateAttachRequest {
+  biconom.type.Rank.ID rank = 1;
+  biconom.type.Condition.Template.ID condition_template = 2;
+}
+message RankSystemRankResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.Rank rank = 2;
+  biconom.type.Confirmation confirmation = 3;
 }

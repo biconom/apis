@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+package biconom.admin.wallet.v1;
+
+import "biconom/type/sort.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/payment_system.proto";
+import "biconom/type/wallet.proto";
+import "biconom/type/time_point.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/wallet/v1;service_admin_wallet_pb";
+
+service Wallet {
+  //  TODO: список всех типов кошельков
+  //  TODO: список валют с значением балансов в выбранном кошельке
+  //  TODO: список транзакций по валюте в выбранном кошельке
+  //  TODO: подробные данные об транзакции
+  //  TODO: получить реквизиты для пополнения
+  //  TODO: создать заявку на вывод
+  //  TODO: добавить реквизиты для вывода в белый список
+  //  TODO: удалить реквизиты для вывода из белого списка
+  //  TODO: список реквизитов для вывода из белого списка
+}
+service WalletProcessing {
+  rpc WalletProcessingPaymentSystemBotKeyGet (biconom.type.Wallet.PaymentSystem.BotKey.ID) returns (biconom.type.Wallet.PaymentSystem.BotKey) {} // отобразить данные ключа синхронизации
+  rpc WalletProcessingPaymentSystemBotKeyList (WalletProcessingPaymentSystemBotKeyListRequest) returns (stream biconom.type.Wallet.PaymentSystem.BotKey) {} // список ключей синхронизации
+  rpc WalletProcessingPaymentSystemBotKeyCreate (WalletProcessingPaymentSystemBotKeyCreateRequest) returns (biconom.type.Wallet.PaymentSystem.BotKey) {} // создать ключ синхронизации
+  rpc WalletProcessingPaymentSystemBotKeyRevoke (biconom.type.Wallet.PaymentSystem.BotKey.ID) returns (google.protobuf.Empty) {} // удалить ключ синхронизации
+  rpc WalletProcessingPaymentSystemBotKeyIpMasksSet (WalletProcessingPaymentSystemBotKeyIpMasksSetRequest) returns (biconom.type.Wallet.PaymentSystem.BotKey) {} // обновить доступ по ip маске для выбранного ключа синхронизации
+
+  rpc WalletProcessingWithdrawalEnable (biconom.type.Wallet.ID) returns (google.protobuf.Empty) {} // включить обработку вывода для выбраной платежной системы
+  rpc WalletProcessingWithdrawalDisable (biconom.type.Wallet.ID) returns (google.protobuf.Empty) {} // отключить обработку вывода для выбраной платежной системы
+  rpc WalletProcessingWithdrawalPaymentSystemEnable (biconom.type.PaymentSystem.ID) returns (google.protobuf.Empty) {} // включить обработку вывода для выбраной платежной системы
+  rpc WalletProcessingWithdrawalPaymentSystemDisable (biconom.type.PaymentSystem.ID) returns (google.protobuf.Empty) {} // отключить обработку вывода для выбраной платежной системы
+  rpc WalletProcessingWithdrawalPaymentSystemCurrencyEnable (biconom.type.PaymentSystem.Currency.ID) returns (google.protobuf.Empty) {} // включить обработку вывода для выбраной комбинации платежной системы и валюты
+  rpc WalletProcessingWithdrawalPaymentSystemCurrencyDisable (biconom.type.PaymentSystem.Currency.ID) returns (google.protobuf.Empty) {} // отключить обработку вывода для выбраной комбинации платежной системы и валюты
+
+  //  TODO: отобразить список заявок на вывод
+  //  TODO: отобразить список заявок на пополнение
+
+}
+//message PaymentSystemListRequest {
+//  biconom.type.PaymentSystem.ID step = 1;
+//  biconom.type.Sort sort = 2;
+//}
+//message PaymentSystemHeaderListByCurrencyRequest {
+//  biconom.type.Currency.ID currency = 1;
+//  biconom.type.PaymentSystem.ID step = 2;
+//  biconom.type.Sort sort = 3;
+//}
+//message PaymentSystemCreateRequest {
+//  string payment_system_name = 1;
+//  bool published = 2;
+//}
+//message PaymentSystemCurrencyListRequest {
+//  biconom.type.PaymentSystem.Currency.ID step = 1;
+//  biconom.type.Sort sort = 2;
+//}
+
+message WalletProcessingPaymentSystemBotKeyListRequest {
+  biconom.type.Wallet.PaymentSystem.BotKey.ID step = 1;
+  biconom.type.Sort sort = 2;
+  bool use_inside = 3;
+}
+message WalletProcessingPaymentSystemBotKeyCreateRequest {
+  biconom.type.PaymentSystem.ID payment_system = 1;
+  string bot_key_title = 2;
+  biconom.type.TimePoint ttl = 3;
+  repeated string ip_masks = 4;
+}
+message WalletProcessingPaymentSystemBotKeyIpMasksSetRequest {
+  biconom.type.Wallet.PaymentSystem.BotKey.ID bot_key = 1;
+  repeated string ip_masks = 2;
+}
+
+
+
+
+service Wallet {
+  rpc CurrencyBalance (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyStat (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyAccessInfo (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyTransactionList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyTransactionListByEventType (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyTransactionInfo (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyDepositAddress (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyValidadeAddress (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyTransferCreate (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyWithdrawalCreate (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc CurrencyMasterTokenOrderCreate (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+service PaymentSystemEpaycore {
+  rpc RequestForm (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+service Binary {
+  rpc PackageList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PositionView (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PositionSetSortTypeID (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+service Product {
+  rpc PackageList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PackageListToken (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PackageOrderCreate (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PackageOrderHistoryList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+service Invest {
+  rpc PackageList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PackageOrderCreate (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PackageOrderHistoryList (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+  rpc PackageOrderHistoryInvestBonusStat (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+service Stat {
+  rpc MasterTokenLimit (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+}
+
+//подписка в кинотеатр
+
+message Voucher {
+  // TODO: идентификатор ваучера
+  // TODO: тип товара
+  // TODO: характеристика товара
+  // TODO: кто хозяен ваучера
+}

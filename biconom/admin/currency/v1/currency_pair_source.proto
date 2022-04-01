@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package biconom.admin.currency.v1;
+
+import "biconom/type/confirmation.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
+import "biconom/type/time_point.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/currency/v1;service_admin_currency_pb";
+
+service CurrencyPairSource {
+  rpc Get (biconom.type.CurrencyPairSource.ID) returns (biconom.type.CurrencyPairSource) {} // отобразить источник курсов валют
+  rpc List (CurrencyPairSourceListRequest) returns (stream biconom.type.CurrencyPairSource) {} // список источников курсов валют
+  rpc ListByPair (CurrencyPairSourceListByPairRequest) returns (stream biconom.type.CurrencyPairSource) {} // список источников курсов валют использующие выбранную валютную пару
+  rpc Create (CurrencyPairSourceCreateRequest) returns (CurrencyPairSourceResponse) {} // создать источник курсов валют
+  rpc Rename (CurrencyPairSourceRenameRequest) returns (CurrencyPairSourceResponse) {} // переименовать источник курсов валют
+  rpc Publish (biconom.type.CurrencyPairSource.ID) returns (CurrencyPairSourceResponse) {} // назначить источнику курсов валют публичный доступ
+  rpc Unpublish (biconom.type.CurrencyPairSource.ID) returns (CurrencyPairSourceResponse) {} // отменить источнику курсов валют публичный доступ
+  rpc RateGet (biconom.type.CurrencyPairSourceRate.ID) returns (biconom.type.CurrencyPairSourceRate) {} // отобразить курс выбранной валютной пары и источника курсов валют
+  rpc RateSet (CurrencyPairSourceRateSetRequest) returns (CurrencyPairSourceRateResponse) {} // установить курс валютной паре выбранного источника курсов валют
+  rpc RateListBySource (CurrencyPairSourceRateListBySourceRequest) returns (stream biconom.type.CurrencyPairSourceRate) {} // список курсов валютных пар выбранного источника курсов валют
+  rpc RateListByFilter (CurrencyPairSourceRateListByFilterRequest) returns (stream biconom.type.CurrencyPairSourceRate) {} // список курсов авбранных валютных пар и источников курсов валют
+  rpc RateTimeframeGet (biconom.type.CurrencyPairSourceRateTimeframe.ID) returns (biconom.type.CurrencyPairSourceRateTimeframe) {} // отобразить агрегированные данные об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+  rpc RateTimeframeList (CurrencyPairSourceRateTimeframeListRequest) returns (stream biconom.type.CurrencyPairSourceRateTimeframe) {} // список агрегированных временных отрезков данных об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+}
+
+message CurrencyPairSourceListRequest {
+  biconom.type.CurrencyPairSource.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message CurrencyPairSourceListByPairRequest {
+  biconom.type.CurrencyPair.ID currency_pair = 1;
+  biconom.type.CurrencyPairSource.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message CurrencyPairSourceCreateRequest {
+  string currency_pair_source_name = 1;
+  bool published = 2;
+}
+message CurrencyPairSourceRenameRequest {
+  biconom.type.CurrencyPairSource.ID currency_pair_source = 1;
+  string currency_pair_source_name = 2;
+}
+message CurrencyPairSourceResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.CurrencyPairSource currency_pair_source = 2;
+  biconom.type.Confirmation confirmation = 3;
+}
+message CurrencyPairSourceRateSetRequest {
+  biconom.type.CurrencyPairSourceRate.ID currency_pair_source_rate = 1;
+  string source_value = 2;
+  string target_value = 3;
+}
+message CurrencyPairSourceRateResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.CurrencyPairSourceRate currency_pair_source_rate = 2;
+  biconom.type.Confirmation confirmation = 3;
+}
+message CurrencyPairSourceRateListBySourceRequest {
+  biconom.type.CurrencyPairSource.ID currency_pair_source = 1;
+  biconom.type.CurrencyPair.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message CurrencyPairSourceRateListByFilterRequest {
+  repeated biconom.type.CurrencyPairSource.ID currency_pair_sources = 1;
+  repeated biconom.type.CurrencyPair.ID currency_pairs = 2;
+  biconom.type.CurrencyPair.ID step = 3;
+  biconom.type.Sort sort = 4;
+}
+message CurrencyPairSourceRateTimeframeListRequest {
+  biconom.type.CurrencyPairSourceRate.ID currency_pair_source_rate = 1;
+  biconom.type.TimePoint timeframe_start_at = 2;
+  biconom.type.TimePoint timeframe_end_at = 3;
+  uint32 timeframe_seconds = 4;
+  biconom.type.Sort sort = 5;
+}

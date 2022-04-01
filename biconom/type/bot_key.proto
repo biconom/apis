@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package biconom.type;
 
-import "biconom/type/until.proto";
+import "biconom/type/time_point.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/bot_key;bot_key_pb";
 
@@ -10,9 +10,19 @@ message BotKey {
   message ID {
     uint32 bot_key_id = 1;
   }
+  message Status {
+    enum ID {
+      ACTIVE = 0;
+      PAUSED = 1;
+      DELETED = 2;
+    }
+    ID status_id = 1;
+  }
+
   uint32 bot_key_id = 1;
   string bot_key_title = 2;
-  string token = 3;
-  biconom.type.Until ttl = 4;
-  repeated string ip_masks = 5;
+  Status.ID status_id = 3;
+  string token = 4;
+  biconom.type.TimePoint ttl = 5;
+  repeated string ip_masks = 6;
 }

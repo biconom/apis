@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package biconom.client.voucher.v1;
+
+import "biconom/type/confirmation.proto";
+import "biconom/type/voucher.proto";
+import "biconom/type/product.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/voucher/v1;service_client_voucher_pb";
+
+service VoucherSelf {
+  rpc Get (VoucherSelfVoucherRequest) returns (biconom.type.Voucher) {} // отобразить выбранный ваучер владельца
+  rpc Find (VoucherSelfVoucherRequest) returns (biconom.type.Voucher) {} // отобразить выбранный ваучер доступный для активации
+  rpc List (VoucherSelfListRequest) returns (stream biconom.type.Voucher) {} // список ваучеров владельца
+  rpc ListByFilter (VoucherSelfListByFilterRequest) returns (stream biconom.type.Voucher) {} // список ваучеров владельца (фильтрация событий по статусам)
+  rpc Create (VoucherSelfCreateRequest) returns (VoucherSelfConfirmationResponse) {} // создать ваучер
+  rpc Reject (VoucherSelfVoucherRequest) returns (VoucherSelfConfirmationResponse) {} // отменить созданный ваучер
+  rpc Activate (VoucherSelfActivateRequest) returns (VoucherSelfConfirmationResponse) {} // активировать ваучер
+  rpc HistoryGet (VoucherSelfHistoryGetRequest) returns (biconom.type.VoucherHistory) {} // отобразить событие обработки ваучеров
+  rpc HistoryList (VoucherSelfHistoryListRequest) returns (stream biconom.type.VoucherHistory) {} // список событий обработки ваучеров
+  rpc HistoryListByFilter (VoucherSelfHistoryListByFilterRequest) returns (stream biconom.type.VoucherHistory) {} // список событий обработки ваучеров (фильтрация событий по статусам)
+}
+
+message VoucherSelfVoucherRequest {
+  biconom.type.Voucher.ID voucher = 1;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 2;
+}
+message VoucherSelfListRequest {
+  biconom.type.Voucher.ID step = 1;
+  biconom.type.Sort sort = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherSelfListByFilterRequest {
+  repeated biconom.type.Voucher.Status.ID status_filter = 1;
+  biconom.type.Voucher.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
+}
+message VoucherSelfCreateRequest {
+  repeated biconom.type.Voucher.Recipient recipients = 1;
+  biconom.type.Voucher.Activation activation = 2;
+  repeated biconom.type.Product.Object.ID product_objects = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
+}
+message VoucherSelfActivateRequest {
+  biconom.type.Voucher.ID voucher = 1;
+  string activation_code = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherSelfConfirmationResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.Voucher voucher = 2;
+  biconom.type.Confirmation confirmation = 3;
+}
+message VoucherSelfHistoryGetRequest {
+  biconom.type.VoucherHistory.ID voucher_history = 1;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 2;
+}
+message VoucherSelfHistoryListRequest {
+  biconom.type.VoucherHistory.ID step = 1;
+  biconom.type.Sort sort = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherSelfHistoryListByFilterRequest {
+  repeated biconom.type.VoucherHistory.Status.ID status_filter = 1;
+  biconom.type.VoucherHistory.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
+}

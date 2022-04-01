@@ -29,17 +29,14 @@ message Account {
     message Rank {
       message ID {
         Account.ID account = 1;
-        biconom.type.RankSystem.Rank.ID rank = 2;
+        biconom.type.Rank.ID rank = 2;
       }
-      biconom.type.RankSystem.Rank.Header header = 1;
-      biconom.type.Condition condition = 2;
-      bool achieved = 3;
-      uint32 achieved_at = 4;
-      bool activated = 5;
-    }
-    message Option {
-      biconom.type.RankSystem.Header header = 1;
-      Rank rank = 2;
+      biconom.type.Rank.Header header = 1;
+      biconom.type.RankSystem.Header rank_system = 2;
+      biconom.type.Condition condition = 3;
+      bool achieved = 4;
+      uint32 achieved_at = 5;
+      bool activated = 6;
     }
     biconom.type.RankSystem.Header header = 1;
     repeated Rank ranks = 2;
@@ -49,4 +46,10 @@ message Account {
     string account_login = 2;
     biconom.type.Profile profile = 3;
   }
+  Header header = 1;
+  biconom.type.AccountState state = 2;
+}
+
+message AccountState {
+//TODO: все данные об состоянии аккаунта
 }

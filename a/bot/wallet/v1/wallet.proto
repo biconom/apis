@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package biconom.bot.wallet.v1;
+
+import "biconom/type/sort.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/payment_system.proto";
+import "biconom/type/time_point.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/bot/wallet/v1;service_bot_wallet_pb";
+
+service Wallet {
+//  TODO: отобразить данные об текущей платежной системе
+//  TODO: отобразить список доступных валют в текущей платежной системе
+//  TODO: получить из очереди заявку на генерацию реквизитов
+//  TODO: пометить заявку в очереди как отмененную
+//  TODO: пометить заявку в очереди как выполненую
+//  TODO: пометить заявку в очереди как замороженную
+//  TODO: пометить заявку в очереди как возвращенную + TTL
+//  TODO: остановить обработку очереди для текущей платежной системы
+}

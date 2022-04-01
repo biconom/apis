@@ -7,20 +7,28 @@ import "biconom/type/rank_system.proto";
 option go_package = "github.com/biconom/go-genproto/biconom/type/rank_statistics;rank_statistics_pb";
 
 message RankStatistics {
-  message AccountCount {
-    biconom.type.RankSystem.Rank.Header rank = 1;
-    uint32 account_count = 2;
+  message AccountQuantity {
+    message Rank {
+      biconom.type.Rank.Header rank = 2;
+      uint32 quantity = 3;
+    }
+    biconom.type.RankSystem.Header rank_system = 1;
+    repeated Rank ranks = 2;
   }
   message AccountTop {
-    message ID {
-      biconom.type.RankSystem.Rank.ID rank = 1;
-      uint32 top_limit = 2;
+    message Rank {
+      message ID {
+        biconom.type.Rank.ID rank = 1;
+        uint32 top_limit = 2;
+      }
+      message Account {
+        biconom.type.Account.Header account = 1;
+        uint32 achieved_at = 2;
+      }
+      biconom.type.Rank.Header rank = 1;
+      repeated Account accounts = 2;
     }
-    message Account {
-      biconom.type.Account.Header account = 1;
-      uint32 achieved_at = 2;
-    }
-    biconom.type.RankSystem.Header rank = 1;
-    repeated Account accounts = 2;
+    biconom.type.RankSystem.Header rank_system = 1;
+    repeated Rank ranks = 2;
   }
 }

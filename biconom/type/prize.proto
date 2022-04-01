@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/product.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/prize;prize_pb";
+
+message Prize {
+  message ID {
+    uint32 prize_id = 1;
+  }
+  uint32 prize_id = 1;
+}
+
+message PrizePool {
+  message ID {
+    uint32 prize_pool_id = 1;
+  }
+  uint32 prize_pool_id = 1;
+  string prize_pool_title = 2;
+}

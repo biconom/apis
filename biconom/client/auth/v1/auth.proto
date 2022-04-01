@@ -6,6 +6,7 @@ import "biconom/type/agent.proto";
 import "biconom/type/contact.proto";
 import "biconom/type/profile.proto";
 import "biconom/type/confirmation.proto";
+import "google/protobuf/empty.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/client/auth/v1;service_client_auth_pb";
 
@@ -15,6 +16,7 @@ service Auth {
   rpc SignAttach (SignAttachRequest) returns (Response) {} // закрепить регистрационные данные
   rpc RecoveryPassword (RecoveryPasswordRequest) returns (Response) {} // восстановить пароль
   rpc RecoveryGoogleAuthenticator (RecoveryGoogleAuthenticatorRequest) returns (Response) {} // восстановить 2FA
+  rpc Validate (ValidateRequest) returns (ValidateResponse) {} // проверка валидности токена
 }
 
 message SignInRequest {
@@ -45,12 +47,23 @@ message RecoveryGoogleAuthenticatorRequest {
   string password = 3; // пароль от аккаунта
 }
 message Response {
-  enum Code {
+  enum Status {
     SUCCESS = 0; // успешно
     ATTACH_STEP = 1; // перейти на этап привязки регистрационных данных
     CONFIRMATION_STEP = 2; // перейти на этап валидации формы подтверждения
   }
-  Code code = 1; // код ответа
+  Status status = 1; // статус ответа
   string access_token = 2; // токен доступа (используется в заголовке "authorization: X.Y.Z" для вызова авторизованных API запросов)
   biconom.type.Confirmation confirmation = 3; // форма подтверждения
+}
+message ValidateRequest {
+  string access_token = 1; // токен доступа
+}
+message ValidateResponse {
+  enum Status {
+    VALIDATED = 0;
+    EXPIRED = 1;
+    INVALID = 2;
+  }
+  Status status = 1; // статус ответа
 }

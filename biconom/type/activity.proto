@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package biconom.type;
 
-import "biconom/type/until.proto";
+import "biconom/type/time_point.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/type/activity;activity_pb";
 
@@ -13,7 +13,7 @@ message Activity {
   }
   message Counter {
     uint32 counter_id = 1;
-    biconom.type.Until counter_value = 2;
+    biconom.type.TimePoint counter_value = 2;
   }
   Header header = 1;
   Counter counter = 2;

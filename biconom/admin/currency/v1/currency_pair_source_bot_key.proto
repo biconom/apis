@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package biconom.admin.currency.v1;
+
+import "biconom/type/bot_key.proto";
+import "biconom/type/confirmation.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
+import "biconom/type/time_point.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/currency/v1;service_admin_currency_pb";
+
+service CurrencyPairSourceBotKey {
+  rpc Get (biconom.type.CurrencyPairSourceBotKey.ID) returns (biconom.type.CurrencyPairSourceBotKey) {} // отобразить данные ключа синхронизации
+  rpc List (CurrencyPairSourceBotKeyListRequest) returns (stream biconom.type.CurrencyPairSourceBotKey) {} // список ключей синхронизации
+  rpc ListBySource (CurrencyPairSourceBotKeyListBySourceRequest) returns (stream biconom.type.BotKey) {} // список ключей синхронизации с фильтром источника курсов валют
+  rpc Create (CurrencyPairSourceBotKeyCreateRequest) returns (CurrencyPairSourceBotKeyResponse) {} // создать ключ синхронизации
+  rpc Revoke (biconom.type.CurrencyPairSourceBotKey.ID) returns (CurrencyPairSourceBotKeyResponse) {} // удалить ключ синхронизации
+  rpc IpMasksSet (CurrencyPairSourceBotKeyIpMasksSetRequest) returns (CurrencyPairSourceBotKeyResponse) {} // обновить доступ по ip маске для выбранного ключа синхронизации
+}
+
+message CurrencyPairSourceBotKeyListRequest {
+  biconom.type.CurrencyPairSourceBotKey.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message CurrencyPairSourceBotKeyListBySourceRequest {
+  biconom.type.CurrencyPairSource.ID currency_pair_source = 1;
+  biconom.type.BotKey.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message CurrencyPairSourceBotKeyCreateRequest {
+  biconom.type.CurrencyPairSource.ID currency_pair_source = 1;
+  string bot_key_title = 2;
+  biconom.type.TimePoint ttl = 3;
+  repeated string ip_masks = 4;
+}
+message CurrencyPairSourceBotKeyIpMasksSetRequest {
+  biconom.type.CurrencyPairSourceBotKey.ID currency_pair_source_bot_key = 1;
+  repeated string ip_masks = 2;
+}
+message CurrencyPairSourceBotKeyResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.CurrencyPairSourceBotKey currency_pair_source_bot_key = 2;
+  biconom.type.Confirmation confirmation = 3;
+}

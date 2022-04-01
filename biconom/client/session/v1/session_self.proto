@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package biconom.client.session.v1;
+
+import "biconom/type/confirmation.proto";
+import "biconom/type/session.proto";
+import "biconom/type/sort.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/session/v1;service_client_session_pb";
+
+service SessionSelf {
+  rpc Get (biconom.type.Session.ID) returns (biconom.type.Session) {} // отобразить сессию
+  rpc GetByCurrent (google.protobuf.Empty) returns (biconom.type.Session) {} // отобразить текущую сессию
+  rpc List (SessionSelfListRequest) returns (stream biconom.type.Session) {} // список действующих сессий
+  rpc DeactivateOther(google.protobuf.Empty) returns (SessionSelfResponse) {} // деактивировать все действующие сессии кроме текущей
+  rpc DeactivateCurrent(google.protobuf.Empty) returns (SessionSelfResponse) {} // деактивировать текущую сессию
+}
+
+message SessionSelfListRequest {
+  biconom.type.Session.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message SessionSelfResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.Confirmation confirmation = 2;
+}

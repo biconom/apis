@@ -2,19 +2,32 @@ syntax = "proto3";
 
 package biconom.client.rank.v1;
 
+import "biconom/type/condition.proto";
+import "biconom/type/confirmation.proto";
 import "biconom/type/rank_system.proto";
 import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/client/rank/v1;service_client_rank_pb";
 
 service RankSystem {
-  rpc Get (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem) {} // отобразить ранговую систему
+  rpc Get (RankSystemGetRequest) returns (biconom.type.RankSystem) {} // отобразить ранговую систему
   rpc List (RankSystemListRequest) returns (stream biconom.type.RankSystem) {} // список ранговых систем
-  rpc HeaderGet (biconom.type.RankSystem.ID) returns (biconom.type.RankSystem.Header) {} // отобразить ранговую систему
-  rpc HeaderList (RankSystemListRequest) returns (stream biconom.type.RankSystem.Header) {} // список ранговых систем
+  rpc RankGet (biconom.type.Rank.ID) returns (biconom.type.Rank) {} // отобразить ранг
+  rpc RankListByRankSystem (RankSystemRankListByRankSystemRequest) returns (stream biconom.type.Rank) {} // список рангов в выбранной ранговой системе
+  rpc RankConditionTemplateGet (biconom.type.Rank.ID) returns (biconom.type.Condition.Template) {} // отобразить условие достижения для ранга в выбранной ранговой системе
 }
 
+message RankSystemGetRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.Sort rank_sort = 2;
+}
 message RankSystemListRequest {
   biconom.type.RankSystem.ID step = 1;
   biconom.type.Sort sort = 2;
+  biconom.type.Sort rank_sort = 3;
+}
+message RankSystemRankListByRankSystemRequest {
+  biconom.type.RankSystem.ID rank_system = 1;
+  biconom.type.Rank.ID.Inner step = 2;
+  biconom.type.Sort sort = 3;
 }

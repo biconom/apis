@@ -2,38 +2,26 @@ syntax = "proto3";
 
 package biconom.bot.currency.v1;
 
-import "biconom/type/sort.proto";
+import "biconom/type/confirmation.proto";
 import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/bot/currency/v1;service_bot_currency_pb";
 
 service CurrencyPair {
-  rpc Get (biconom.type.Currency.Pair.ID) returns (biconom.type.Currency.Pair) {} // отобразить данные выбранной валютной пары
-  rpc List (CurrencyPairListRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар
-  rpc ListBySource (CurrencyPairListBySourceRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по исходящей валюте
-  rpc ListByTarget (CurrencyPairListByTargetRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по входящей валюте
-  rpc ListByCurrency (CurrencyPairListByCurrencyRequest) returns (stream biconom.type.Currency.Pair) {} // список валютных пар с фильтром по использованию валюты
+  rpc Get (biconom.type.CurrencyPair.ID) returns (biconom.type.CurrencyPair.Header) {} // отобразить валютную пару
+  rpc List (CurrencyPairListRequest) returns (stream biconom.type.CurrencyPair.Header) {} // список валютных пар
+  rpc ListBySource (CurrencyPairListByCurrencyRequest) returns (stream biconom.type.CurrencyPair.Header) {} // список валютных пар с фильтром по исходящей валюте
+  rpc ListByTarget (CurrencyPairListByCurrencyRequest) returns (stream biconom.type.CurrencyPair.Header) {} // список валютных пар с фильтром по входящей валюте
+  rpc ListByCurrency (CurrencyPairListByCurrencyRequest) returns (stream biconom.type.CurrencyPair.Header) {} // список валютных пар с фильтром по использованию валюты
 }
 
 message CurrencyPairListRequest {
-  biconom.type.Currency.Pair.ID step = 1;
+  biconom.type.CurrencyPair.ID step = 1;
   biconom.type.Sort sort = 2;
-  bool only_published_pair = 3;
-}
-message CurrencyPairListBySourceRequest {
-  biconom.type.Currency.ID source_currency = 1;
-  biconom.type.Currency.ID step = 2;
-  biconom.type.Sort sort = 3;
-  bool only_published_pair = 4;
-}
-message CurrencyPairListByTargetRequest {
-  biconom.type.Currency.ID target_currency = 1;
-  biconom.type.Currency.ID step = 2;
-  biconom.type.Sort sort = 3;
-  bool only_published_pair = 4;
 }
 message CurrencyPairListByCurrencyRequest {
   biconom.type.Currency.ID currency = 1;
-  biconom.type.Sort sort = 2;
-  bool only_published_pair = 3;
+  biconom.type.CurrencyPair.ID step = 2;
+  biconom.type.Sort sort = 3;
 }

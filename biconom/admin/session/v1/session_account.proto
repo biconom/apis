@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package biconom.admin.session.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/confirmation.proto";
+import "biconom/type/session.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/session/v1;service_admin_session_pb";
+
+service SessionAccount {
+  rpc Get (SessionAccountRequest) returns (biconom.type.Session) {} // отобразить сессию
+  rpc List (SessionAccountListRequest) returns (stream biconom.type.Session) {} // список действующих сессий
+  rpc Deactivate(SessionAccountRequest) returns (SessionAccountResponse) {} // деактивировать все действующие сессии кроме текущей
+  rpc DeactivateAll(biconom.type.Account.ID) returns (SessionAccountResponse) {} // деактивировать текущую сессию
+}
+
+message SessionAccountRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.Session.ID session = 2;
+}
+message SessionAccountListRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.Session.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message SessionAccountResponse {
+  enum Status {
+    SUCCESS = 0; // успешно
+    CONFIRMATION_STEP = 1; // перейти на этап валидации формы подтверждения
+  }
+  Status status = 1;
+  biconom.type.Confirmation confirmation = 2;
+}

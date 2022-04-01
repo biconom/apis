@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/condition.proto";
+import "biconom/type/product.proto";
+import "biconom/type/prize.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/quest;quest_pb";
+
+message QuestTemplate {
+  message ID {
+    uint32 quest_template_id = 1;
+  }
+  message Header {
+    uint32 quest_template_id = 1;
+    string quest_template_title = 2;
+    bool access_auto_accept = 3;
+    uint32 created_at = 4;
+  }
+  message Statistics {
+      uint32 members_quantity = 1;
+      uint32 completed_quantity = 2;
+  }
+  Header header = 1;
+  Statistics statistics = 2;
+  biconom.type.Condition.Template condition_template_access = 3;
+  biconom.type.Condition.Template condition_template_done = 4;
+  biconom.type.PrizePool prize_pool = 5;
+}
+
+message Quest {
+  message ID {
+    uint32 quest_id = 1;
+  }
+  message Header {
+    uint32 quest_id = 1;
+    bool accessed = 2;
+    bool done = 3;
+    uint32 accessed_at = 4;
+    uint32 done_at = 5;
+  }
+  Header header = 1;
+  biconom.type.QuestTemplate quest_template = 2;
+  biconom.type.Condition.Execution condition_execution_access = 3;
+  biconom.type.Condition.Execution condition_execution_done = 4;
+  biconom.type.Prize prizes = 5;
+}

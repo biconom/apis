@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package biconom.type;
-
-option go_package = "github.com/biconom/go-genproto/biconom/type/quests;quests_pb";
-
-message Quests {
-  uint32 quests_id = 1;
-}

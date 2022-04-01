@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package biconom.client.quest.v1;
+
+import "biconom/type/quest.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/quest/v1;service_client_quest_pb";
+
+// QuestSelf - сервис для работы с квестами пользователя
+service QuestSelf {
+  rpc Get (biconom.type.Quest.ID) returns (biconom.type.Quest) {} // отобразить квест
+  rpc List (QuestSelfListRequest) returns (stream biconom.type.Quest) {} // список квестов пользователя
+  rpc GetByTemplate (biconom.type.QuestTemplate.ID) returns (biconom.type.Quest) {} // отобразить квест по идентификатору шаблона
+  rpc ListByTemplate (QuestSelfListByTemplateRequest) returns (stream biconom.type.Quest) {} // список квестов пользователя по идентификатору шаблона
+  rpc AcceptByTemplate (biconom.type.QuestTemplate.ID) returns (biconom.type.Quest) {} // активировать участие в квесте
+}
+
+message QuestSelfListRequest {
+  biconom.type.Quest.ID step = 1;
+  biconom.type.Sort sort = 2;
+}
+message QuestSelfListByTemplateRequest {
+  biconom.type.QuestTemplate.ID step = 1;
+  biconom.type.Sort sort = 2;
+}

@@ -12,6 +12,7 @@ option go_package = "github.com/biconom/go-genproto/biconom/admin/auth/v1;servic
 service Auth {
   rpc SignIn (SignInRequest) returns (Response) {} // авторизация
   rpc SignAttach (SignAttachRequest) returns (Response) {} // закрепить регистрационные данные
+  rpc Validate (ValidateRequest) returns (ValidateResponse) {} // проверка валидности токена
 }
 
 message SignInRequest {
@@ -26,12 +27,23 @@ message SignAttachRequest {
   string locale = 4; // идентификатор языка (ru-RU, en-US, ...)
 }
 message Response {
-  enum Code {
+  enum Status {
     SUCCESS = 0; // успешно
     ATTACH_STEP = 1; // перейти на этап привязки регистрационных данных
     CONFIRMATION_STEP = 2; // перейти на этап валидации формы подтверждения
   }
-  Code code = 1; // код ответа
+  Status status = 1; // статус ответа
   string access_token = 2; // токен доступа (используется в заголовке "authorization: X.Y.Z" для вызова авторизованных API запросов)
   biconom.type.Confirmation confirmation = 3; // форма подтверждения
+}
+message ValidateRequest {
+  string access_token = 1; // токен доступа
+}
+message ValidateResponse {
+  enum Status {
+    VALIDATED = 0;
+    EXPIRED = 1;
+    INVALID = 2;
+  }
+  Status status = 1; // статус ответа
 }

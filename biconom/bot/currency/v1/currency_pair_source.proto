@@ -1,0 +1,40 @@
+syntax = "proto3";
+
+package biconom.bot.currency.v1;
+
+import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
+import "biconom/type/time_point.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/bot/currency/v1;service_bot_currency_pb";
+
+service CurrencyPairSource {
+  rpc Get (google.protobuf.Empty) returns (biconom.type.CurrencyPairSource.Header) {} // отобразить источник курсов валют
+  rpc RateGet (biconom.type.CurrencyPair.ID) returns (biconom.type.CurrencyPairSourceRate) {} // отобразить курс выбранной валютной пары и источника курсов валют
+  rpc RateSet (CurrencyPairSourceRateSetRequest) returns (google.protobuf.Empty) {} // установить курс валютной паре выбранного источника курсов валют
+  rpc RateList (CurrencyPairSourceRateListRequest) returns (stream biconom.type.CurrencyPairSourceRate) {} // список курсов валютных пар выбранного источника курсов валют
+  rpc RateTimeframeGet (CurrencyPairSourceRateTimeframeGetRequest) returns (biconom.type.CurrencyPairSourceRateTimeframe) {} // отобразить агрегированные данные об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+  rpc RateTimeframeList (CurrencyPairSourceRateTimeframeListRequest) returns (stream biconom.type.CurrencyPairSourceRateTimeframe) {} // список агрегированных временных отрезков данных об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+}
+
+message CurrencyPairSourceRateSetRequest {
+  biconom.type.CurrencyPair.ID currency_pair = 1;
+  string source_value = 2;
+  string target_value = 3;
+}
+message CurrencyPairSourceRateListRequest {
+  biconom.type.CurrencyPair.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message CurrencyPairSourceRateTimeframeGetRequest {
+  biconom.type.CurrencyPair.ID currency_pair = 1;
+  biconom.type.CurrencyPairSourceRateTimeframe.Timeframe timeframe = 3;
+}
+message CurrencyPairSourceRateTimeframeListRequest {
+  biconom.type.CurrencyPair.ID currency_pair = 1;
+  biconom.type.TimePoint timeframe_start_at = 2;
+  biconom.type.TimePoint timeframe_end_at = 3;
+  uint32 timeframe_seconds = 4;
+  biconom.type.Sort sort = 5;
+}

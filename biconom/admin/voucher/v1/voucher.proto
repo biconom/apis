@@ -2,15 +2,50 @@ syntax = "proto3";
 
 package biconom.admin.voucher.v1;
 
-import "google/protobuf/empty.proto";
+import "biconom/type/account.proto";
+import "biconom/type/confirmation.proto";
+import "biconom/type/voucher.proto";
+import "biconom/type/product.proto";
+import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/admin/voucher/v1;service_admin_voucher_pb";
 
 service Voucher {
-  rpc Get (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: найти информацию по идентификатору ваучера
-  rpc List (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // TODO: список ваучеров
-  rpc ListByAccount (google.protobuf.Empty) returns (stream google.protobuf.Empty) {} // TODO: список ваучеров пользователя
-  rpc Create (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: создать ваучер
-  rpc Activate (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: активировать ваучер
-  rpc Reject (google.protobuf.Empty) returns (google.protobuf.Empty) {} // TODO: отменить созданный ваучер
+  rpc Get (VoucherVoucherRequest) returns (biconom.type.Voucher) {} // отобразить выбранный ваучер
+  rpc List (VoucherListRequest) returns (stream biconom.type.Voucher) {} // список ваучеров
+  rpc ListByFilter (VoucherListByFilterRequest) returns (stream biconom.type.Voucher) {} // список ваучеров (фильтрация событий по статусам)
+  rpc HistoryGet (VoucherHistoryGetRequest) returns (biconom.type.VoucherHistory) {} // отобразить событие обработки ваучеров
+  rpc HistoryList (VoucherHistoryListRequest) returns (stream biconom.type.VoucherHistory) {} // список событий обработки ваучеров
+  rpc HistoryListByFilter (VoucherHistoryListByFilterRequest) returns (stream biconom.type.VoucherHistory) {} // список событий обработки ваучеров (фильтрация событий по статусам)
+}
+
+message VoucherVoucherRequest {
+  biconom.type.Voucher.ID voucher = 1;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 2;
+}
+message VoucherListRequest {
+  biconom.type.Voucher.ID step = 1;
+  biconom.type.Sort sort = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherListByFilterRequest {
+  repeated biconom.type.Voucher.Status.ID status_filter = 1;
+  biconom.type.Voucher.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
+}
+message VoucherHistoryGetRequest {
+  biconom.type.VoucherHistory.ID voucher_history = 1;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 2;
+}
+message VoucherHistoryListRequest {
+  biconom.type.VoucherHistory.ID step = 1;
+  biconom.type.Sort sort = 2;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 3;
+}
+message VoucherHistoryListByFilterRequest {
+  repeated biconom.type.VoucherHistory.ID status_filter = 1;
+  biconom.type.VoucherHistory.ID step = 2;
+  biconom.type.Sort sort = 3;
+  biconom.type.Voucher.ViewFields voucher_view_fields = 4;
 }

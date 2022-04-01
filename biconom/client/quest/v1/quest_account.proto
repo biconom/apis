@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package biconom.client.quest.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/quest.proto";
+import "biconom/type/sort.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/client/quest/v1;service_client_quest_pb";
+
+service QuestAccount {
+  rpc Get (QuestAccountGetRequest) returns (biconom.type.Quest) {} // отобразить квест от имени пользователя
+  rpc List (QuestAccountListRequest) returns (stream biconom.type.Quest) {} // список квестов пользователя
+  rpc GetByTemplate (QuestAccountGetByTemplateRequest) returns (biconom.type.Quest) {} // отобразить квест по идентификатору шаблона от имени пользователя
+  rpc ListByTemplate (QuestAccountListByTemplateRequest) returns (stream biconom.type.Quest) {} // список квестов пользователя по идентификатору шаблона
+}
+
+message QuestAccountGetRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.Quest.ID quest = 2;
+}
+message QuestAccountListRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.Quest.ID step = 2;
+  biconom.type.Sort sort = 3;
+}
+message QuestAccountGetByTemplateRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.QuestTemplate.ID quest_template = 2;
+}
+message QuestAccountListByTemplateRequest {
+  biconom.type.Account.ID account = 1;
+  biconom.type.QuestTemplate.ID step = 2;
+  biconom.type.Sort sort = 3;
+}

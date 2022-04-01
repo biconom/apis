@@ -2,14 +2,15 @@ syntax = "proto3";
 
 package biconom.client.currency.v1;
 
-import "biconom/type/sort.proto";
+import "biconom/type/confirmation.proto";
 import "biconom/type/currency.proto";
+import "biconom/type/sort.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/client/currency/v1;service_client_currency_pb";
 
 service Currency {
-  rpc Get (biconom.type.Currency.ID) returns (biconom.type.Currency) {} // отобразить данные выбранной валюты
-  rpc List (CurrencyListRequest) returns (stream biconom.type.Currency) {} // список валют
+  rpc Get (biconom.type.Currency.ID) returns (biconom.type.Currency.Header) {} // отобразить валюту
+  rpc List (CurrencyListRequest) returns (stream biconom.type.Currency.Header) {} // список валют
 }
 
 message CurrencyListRequest {

@@ -6,6 +6,9 @@ import "biconom/type/agent.proto";
 option go_package = "github.com/biconom/go-genproto/biconom/type/session;session_pb";
 
 message Session {
+  message ID {
+    uint32 session_id = 1;
+  }
   enum Status {
     ACTIVATED = 0;
     NOT_CONFIRMED = 1;
@@ -15,8 +18,8 @@ message Session {
   message Value {
     uint32 account_id = 1;
     uint32 session_id = 2;
-    int64 created_at = 3;
-    int64 expires_at = 4;
+    uint32 created_at = 3;
+    uint32 expires_at = 4;
   }
   message Metadata {
     string ip = 1;

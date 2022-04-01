@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package biconom.admin.quest.v1;
+
+import "biconom/type/condition.proto";
+import "biconom/type/prize.proto";
+import "biconom/type/sort.proto";
+import "biconom/type/quest.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/quest/v1;service_admin_quest_pb";
+
+service QuestTemplate {
+  rpc Get (biconom.type.QuestTemplate.ID) returns (biconom.type.QuestTemplate) {} // отобразить шаблон квеста по идентификатору шаблона
+  rpc List (QuestTemplateListRequest) returns (stream biconom.type.QuestTemplate) {} // список шаблонов квестов
+  rpc Create (QuestTemplateCreateRequest) returns (biconom.type.QuestTemplate) {} // создать шаблон квеста
+}
+
+message QuestTemplateListRequest {
+  biconom.type.QuestTemplate.ID step = 1;
+  biconom.type.Sort sort = 3;
+}
+message QuestTemplateCreateRequest {
+  string quest_template_title = 1;
+  bool access_auto_accept = 2;
+  biconom.type.Condition.Template.ID condition_template_access = 3;
+  biconom.type.Condition.Template.ID condition_template_done = 4;
+  biconom.type.PrizePool.ID prize_pool = 5;
+}

@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package biconom.type;
+
+import "biconom/type/activity.proto";
+import "biconom/type/currency.proto";
+import "biconom/type/wallet.proto";
+import "google/protobuf/struct.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/product;product_pb";
+
+message Product {
+  message Object {
+    message ActivityAccount {
+      message ID {
+        uint32 counter_id = 1;
+      }
+      message Properties {
+        bool infinity = 1;
+        uint32 seconds = 2;
+        // срок годность действия талона
+      }
+      uint32 counter_id = 1;
+      biconom.type.Activity.Header header = 2;
+      Properties properties = 3;
+    }
+    message Ticket {
+      message ID {
+        uint32 counter_id = 1;
+      }
+      message Header {
+        uint32 event_id = 1;
+        string event_name = 2;
+      }
+      message Properties {
+        bool infinity = 1;
+        uint32 seconds = 2;
+        string comment = 3;
+        // срок годность действия билета
+      }
+      uint32 counter_id = 1;
+      Header header = 2;
+      Properties properties = 3;
+    }
+    message Money {
+      message ID {
+        biconom.type.Wallet.ID wallet = 1;
+        biconom.type.Currency.ID currency = 2;
+        string value = 3;
+      }
+      message Header {
+        biconom.type.Wallet.Header wallet = 1;
+      }
+      message Properties {
+        biconom.type.Currency currency = 1;
+        string value = 2;
+      }
+      uint32 counter_id = 1;
+      Header header = 2;
+      Properties properties = 3;
+    }
+    message NFT {
+      message ID {
+        uint32 counter_id = 1;
+      }
+      message Header {
+        uint32 collection_id = 1;
+        string collection_name = 2;
+      }
+      uint32 counter_id = 1;
+      Header header = 2;
+      google.protobuf.Struct properties = 3;
+    }
+    message Shipment {
+      message ID {
+        uint32 counter_id = 1;
+      }
+      message Header {
+        string comment = 1;
+      }
+      uint32 counter_id = 1;
+      Header header = 2;
+      google.protobuf.Struct properties = 3;
+    }
+
+    message ID {
+      oneof unique_field {
+        ActivityAccount.ID activity_account = 1; // талон для продления счетчика аккаунта
+        Ticket.ID ticket = 2; // билет на событие
+        Money.ID money = 3; // денежные средства
+        NFT.ID nft = 4; // NFT
+        Shipment.ID shipment = 5; // Товары с доставкой
+      }
+    }
+    message Value {
+      oneof unique_field {
+        ActivityAccount activity_account = 1; // талон для продления счетчика аккаунта
+        Ticket ticket = 2; // билет на событие
+        Money money = 3; // денежные средства
+        NFT nft = 4; // NFT
+        Shipment shipment = 5; // Товары с доставкой
+      }
+    }
+    message Settings {
+      bool voucher_transmitted = 1;
+    }
+    Value value = 1;
+    uint32 quantity = 2;
+    Settings settings = 3;
+  }
+}
