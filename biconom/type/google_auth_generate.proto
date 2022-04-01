@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package biconom.type;
+
+option go_package = "github.com/biconom/go-genproto/biconom/type/google_auth_generate;google_auth_generate_pb";
+
+message GoogleAuthGenerate {
+  message SecretCode {
+    string secret_code = 1;
+  }
+  message VerifiedCode {
+    string verified_code = 1;
+  }
+}

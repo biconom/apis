@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package biconom.admin.account.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/confirmation.proto";
+import "biconom/type/contact.proto";
+import "biconom/type/google_auth_generate.proto";
+import "biconom/type/profile.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/account/v1;service_admin_account_pb";
+
+service AccountSelf {
+  rpc Get (google.protobuf.Empty) returns (biconom.type.Account) {} // отобразить данные об пользователе
+  rpc ProfileSet (biconom.type.Profile.Data) returns (biconom.type.Confirmation) {} // обновлить профиль
+  rpc ContactAdd (biconom.type.Contact) returns (biconom.type.Confirmation) {} // обавить контакт
+  rpc ContactDelete (biconom.type.Contact) returns (biconom.type.Confirmation) {} // удалить контакт
+  rpc ContactPrimarySet (biconom.type.Contact) returns (biconom.type.Confirmation) {} // установить контакт основным для своей группы
+  rpc PasswordUpdate (AccountSelfPasswordUpdateRequest) returns (biconom.type.Confirmation) {} // смена пароля
+  rpc GoogleAuthGenerate (google.protobuf.Empty) returns (biconom.type.GoogleAuthGenerate.SecretCode) {} // установить 2FA
+  rpc GoogleAuthActivate (biconom.type.GoogleAuthGenerate.VerifiedCode) returns (biconom.type.Confirmation) {} // активировать 2FA
+  rpc GoogleAuthDeactivate (google.protobuf.Empty) returns (biconom.type.Confirmation) {} // сбросить 2FA
+}
+message AccountSelfPasswordUpdateRequest {
+  string password = 1;
+}
+
+//  TODO: статистика счетчиков активности
+//  TODO: статистика товарооборотов
+//  TODO: статистика позиций в бинаре всего
+//  TODO: список значений активных пакетов в каждом из тарифных планов
+//  TODO: статистика суммарной информации выбранного инвестиционного плана
+//  TODO: список рандомных товаров из магазина
+//  TODO: статистика всего заработанного по видам бонусов за выбранный период
+//  TODO: статистика изменения цены валютной пары
+//  TODO: статистика изменения прироста партнеров в реферальной структуре

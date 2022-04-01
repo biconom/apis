@@ -3,13 +3,13 @@ syntax = "proto3";
 package biconom.client.account.v1;
 
 import "biconom/type/session.proto";
-import "biconom/type/filter.proto";
+import "biconom/type/sort.proto";
 import "biconom/type/rank_system.proto";
 import "google/protobuf/empty.proto";
 
 option go_package = "github.com/biconom/go-genproto/biconom/client/account/v1;service_client_account_pb";
 
-service Account {
+service AccountSelf {
 //  rpc AccountInfo (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 //  rpc AccountSecurityCodeActivate (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 //  rpc AccountSecurityCodeDeactivate (google.protobuf.Empty) returns (google.protobuf.Empty) {}

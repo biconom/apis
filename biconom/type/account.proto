@@ -47,7 +47,8 @@ message Account {
     biconom.type.Profile profile = 3;
   }
   Header header = 1;
-  biconom.type.AccountState state = 2;
+  Contact contacts = 2;
+  biconom.type.AccountState state = 30;
 }
 
 message AccountState {

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package biconom.admin.account.v1;
+
+import "biconom/type/account.proto";
+import "biconom/type/confirmation.proto";
+import "biconom/type/contact.proto";
+import "biconom/type/google_auth_generate.proto";
+import "biconom/type/profile.proto";
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/biconom/go-genproto/biconom/admin/account/v1;service_admin_account_pb";
+
+service AccountSelf {
+  rpc Get (google.protobuf.Empty) returns (biconom.type.Account) {} // отобразить данные об пользователе
+  rpc ProfileSet (biconom.type.Profile.Data) returns (biconom.type.Confirmation) {} // обновлить профиль
+  rpc ContactAdd (biconom.type.Contact) returns (biconom.type.Confirmation) {} // обавить контакт
+  rpc ContactDelete (biconom.type.Contact) returns (biconom.type.Confirmation) {} // удалить контакт
+  rpc ContactPrimarySet (biconom.type.Contact) returns (biconom.type.Confirmation) {} // установить контакт основным для своей группы
+  rpc PasswordUpdate (google.protobuf.Empty) returns (biconom.type.Confirmation) {} // смена пароля
+  rpc GoogleAuthGenerate (google.protobuf.Empty) returns (biconom.type.GoogleAuthGenerate.SecretCode) {} // установить 2FA
+  rpc GoogleAuthActivate (biconom.type.GoogleAuthGenerate.VerifiedCode) returns (google.protobuf.Empty) {} // активировать 2FA
+  rpc GoogleAuthDeactivate (google.protobuf.Empty) returns (biconom.type.Confirmation) {} // сбросить 2FA
+}
