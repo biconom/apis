@@ -16,8 +16,8 @@ service CurrencyPairSourceDefault {
   rpc Detach (biconom.type.CurrencyPairSourceDefault.ID) returns (CurrencyPairSourceDefaultResponse) {} // отвязать источник от валютной пары по умолчанию
   rpc RateGet (CurrencyPairSourceDefaultRateGetRequest) returns (biconom.type.CurrencyPairSourceRate) {} // отобразить значениее курса из источника по умолчанию для выбранной валютной пары
   rpc RateList (CurrencyPairSourceDefaultRateListRequest) returns (stream biconom.type.CurrencyPairSourceRate) {} // список валютных пар с значением курса из привязанного источника по умолчанию
-  rpc RateTimeframeGet (biconom.type.CurrencyPairSourceRateTimeframe.ID) returns (biconom.type.CurrencyPairSourceRateTimeframe) {} // отобразить агрегированные данные об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
-  rpc RateTimeframeList (CurrencyPairSourceDefaultRateTimeframeListRequest) returns (stream biconom.type.CurrencyPairSourceRateTimeframe) {} // список агрегированных временных отрезков данных об курсе выбранной валютной пары в перод времени из выбранного ситочника курса валют
+  rpc RateTimeframeGet (biconom.type.CurrencyPairSourceRateTimeframe.ID) returns (biconom.type.CurrencyPairSourceRateTimeframe) {} // отобразить агрегированные данные об курсе выбранной валютной пары в перод времени из выбранного источника курса валют
+  rpc RateTimeframeList (CurrencyPairSourceDefaultRateTimeframeListRequest) returns (stream biconom.type.CurrencyPairSourceRateTimeframe) {} // список агрегированных временных отрезков данных об курсе выбранной валютной пары в перод времени из выбранного источника курса валют
 }
 
 message CurrencyPairSourceDefaultListRequest {
